@@ -1,0 +1,105 @@
+// Copyright (c) 2018 Bernardo Monsalve
+// https://github.com/lbmonsalve/Xojo-xopo.git
+//
+// to change:
+Dim tagsToChange() As Pair
+tagsToChange.Append New Pair(";SVGDocument", ";../SVGDocument")
+tagsToChange.Append New Pair(";SVGDocument/", ";../SVGDocument/")
+
+Dim foldersToMove() As Pair
+foldersToMove.Append New Pair("SVGDocument", "../")
+
+
+// dont change
+If ProjectShellPath= "" Then
+Print "No project opened!"
+Return
+End If
+
+Dim projectPath, projectFolder As String
+projectPath= ProjectShellPath
+
+DoCommand "SaveFile"
+DoCommand "CloseWindow"
+
+Dim command, from, dest, result As String
+Dim TrgetWin32, TrgetMacOS, TrgetLinux As Boolean
+
+command= "xopo --targetOS "
+result= Lowercase(Trim(DoShellCommand(command)))
+
+Select Case result
+Case "targetwin"
+TrgetWin32= True
+Case "targetmacos"
+TrgetMacOS= True
+Case "targetlinux"
+TrgetLinux= True
+End Select
+
+Dim par As Pair
+
+For Each par In tagsToChange
+command= "xopo -p "+ projectPath+ " """+ par.Left.StringValue+ """ """+ _
+par.Right.StringValue+ """"
+result= DoShellCommand(command)
+'Print result
+Next
+
+projectFolder= GetProjectFolder(projectPath, TrgetWin32)
+
+For Each par In foldersToMove
+from= par.Left.StringValue
+dest= par.Right.StringValue
+
+command= "xopo --folderShellBase="+ projectFolder+_
+" --folderMove="""+ from+ """ --folderMoveTo="""+ dest+ """"
+'Print command
+result= DoShellCommand(command)
+'Print result
+Next
+
+//DoCommand "OpenFile"
+OpenFile projectPath
+
+
+// support:
+Class Pair
+Private mLeft As Variant
+Private mRight As Variant
+
+Sub Constructor(left As Variant, right As Variant)
+mLeft= left
+mRight= right
+End Sub
+
+Function Left() As Variant
+Return mLeft
+End Function
+
+Function Right() As Variant
+Return mRight
+End Function
+
+End Class
+
+// helper functions
+Function GetProjectFolder(filePath As String, isWin As Boolean) As String
+Dim ret, sep As String
+If isWin Then
+sep= "\"
+Else
+sep= "/"
+End If
+
+Dim i, n As Integer
+
+n= CountFields(filePath, sep)
+
+For i= 1 To n- 1
+ret= ret+ NthField(filePath, sep, i)+ sep
+Next
+
+Return ret
+
+End Function
