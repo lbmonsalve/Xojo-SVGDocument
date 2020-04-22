@@ -422,6 +422,106 @@ Protected Module ShapeExtendsLBM
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function PointList(Extends obj As Object2D) As SVGPointList()
+		  Dim ret() As SVGPointList
+		  
+		  If obj IsA ArcShape Then
+		    System.DebugLog CurrentMethodName+ " ArcShape" // TODO:
+		  ElseIf obj IsA OvalShape Then
+		    System.DebugLog CurrentMethodName+ " OvalShape" // TODO:
+		  ElseIf obj IsA RoundRectShape Then
+		    System.DebugLog CurrentMethodName+ " RoundRectShape" // TODO:
+		  ElseIf obj IsA PixmapShape Then
+		    System.DebugLog CurrentMethodName+ " PixmapShape" // TODO:
+		  ElseIf obj IsA RectShape Then
+		    System.DebugLog CurrentMethodName+ " RectShape" // TODO:
+		  ElseIf obj IsA StringShape Then
+		    System.DebugLog CurrentMethodName+ " StringShape" // TODO:
+		  ElseIf obj IsA CurveShape Then
+		    Dim shape As CurveShape= CurveShape(obj)
+		    Dim pointList As New SVGPointList
+		    
+		    pointList.Append New Point(shape.X, shape.Y)
+		    pointList.Append New Point(shape.X2, shape.Y2)
+		    
+		    ret.Append pointList
+		  ElseIf obj IsA FigureShape Then
+		    Dim shape As FigureShape= FigureShape(obj)
+		    
+		    For i As Integer= 0 To shape.Count- 1
+		      shape.Item(i).PointList(ret)
+		    Next
+		  ElseIf obj IsA Group2D Then
+		    Dim shape As Group2D= Group2D(obj)
+		    
+		    For i As Integer= 0 To shape.Count- 1
+		      shape.Item(i).PointList(ret)
+		    Next
+		  ElseIf obj IsA Object2D Then
+		    Break
+		  End If
+		  
+		  Return ret
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub PointList(Extends obj As Object2D, ret() As SVGPointList)
+		  If obj IsA ArcShape Then
+		    System.DebugLog CurrentMethodName+ " ret() ArcShape" // TODO:
+		  ElseIf obj IsA OvalShape Then
+		    System.DebugLog CurrentMethodName+ " ret() OvalShape" // TODO:
+		  ElseIf obj IsA RoundRectShape Then
+		    System.DebugLog CurrentMethodName+ " ret() RoundRectShape" // TODO:
+		  ElseIf obj IsA PixmapShape Then
+		    System.DebugLog CurrentMethodName+ " ret() PixmapShape" // TODO:
+		  ElseIf obj IsA RectShape Then
+		    System.DebugLog CurrentMethodName+ " ret() RectShape" // TODO:
+		  ElseIf obj IsA StringShape Then
+		    System.DebugLog CurrentMethodName+ " ret() StringShape" // TODO:
+		  ElseIf obj IsA CurveShape Then
+		    Dim shape As CurveShape= CurveShape(obj)
+		    Dim pointList As New SVGPointList
+		    
+		    pointList.Append New Point(shape.X, shape.Y)
+		    pointList.Append New Point(shape.X2, shape.Y2)
+		    
+		    ret.Append pointList
+		  ElseIf obj IsA FigureShape Then
+		    Dim shape As FigureShape= FigureShape(obj)
+		    Dim pointList As New SVGPointList
+		    
+		    For i As Integer= 0 To shape.Count- 1
+		      Dim points() As Point= shape.Item(i).Points
+		      
+		      For j As Integer= 0 To points.Ubound
+		        pointList.Append points(j)
+		      Next
+		    Next
+		    
+		    Dim points() As Point= pointList.Points
+		    Try
+		      If points(points.Ubound)<> points(0) Then // to close shape
+		        points.Append points(0)
+		      End If
+		    Catch exc As RuntimeException
+		      System.DebugLog CurrentMethodName+ " exc:"+ Introspection.GetType(exc).Name
+		    End Try
+		    
+		    ret.Append pointList
+		  ElseIf obj IsA Group2D Then
+		    Dim shape As Group2D= Group2D(obj)
+		    
+		    For i As Integer= 0 To shape.Count- 1
+		      shape.Item(i).PointList(ret)
+		    Next
+		  ElseIf obj IsA Object2D Then
+		    Break
+		  End If
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub PointMinMax(ByRef pMin As Point, ByRef pMax As Point, ParamArray points As Point)
 		  For Each point As Point In points
@@ -447,17 +547,17 @@ Protected Module ShapeExtendsLBM
 		  Dim ret() As Point
 		  
 		  If obj IsA ArcShape Then
-		    System.DebugLog CurrentMethodName+ " ArcShape"
+		    System.DebugLog CurrentMethodName+ " ArcShape" // TODO:
 		  ElseIf obj IsA OvalShape Then
-		    System.DebugLog CurrentMethodName+ " OvalShape"
+		    System.DebugLog CurrentMethodName+ " OvalShape" // TODO:
 		  ElseIf obj IsA RoundRectShape Then
-		    System.DebugLog CurrentMethodName+ " RoundRectShape"
+		    System.DebugLog CurrentMethodName+ " RoundRectShape" // TODO:
 		  ElseIf obj IsA PixmapShape Then
-		    System.DebugLog CurrentMethodName+ " PixmapShape"
+		    System.DebugLog CurrentMethodName+ " PixmapShape" // TODO:
 		  ElseIf obj IsA RectShape Then
-		    System.DebugLog CurrentMethodName+ " RectShape"
+		    System.DebugLog CurrentMethodName+ " RectShape" // TODO:
 		  ElseIf obj IsA StringShape Then
-		    System.DebugLog CurrentMethodName+ " StringShape"
+		    System.DebugLog CurrentMethodName+ " StringShape" // TODO:
 		  ElseIf obj IsA CurveShape Then
 		    Dim shape As CurveShape= CurveShape(obj)
 		    
@@ -468,6 +568,7 @@ Protected Module ShapeExtendsLBM
 		    
 		    For i As Integer= 0 To shape.Count- 1
 		      Dim points() As Point= shape.Item(i).Points
+		      
 		      For j As Integer= 0 To points.Ubound
 		        ret.Append points(j)
 		      Next

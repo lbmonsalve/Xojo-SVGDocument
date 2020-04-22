@@ -56,6 +56,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
+		  // load svg
 		  Dim svg As New MySVGDocument(kWorldMapSVG)
 		  mSvgGroup2d= svg.ToGroup2D
 		  mSize= mSvgGroup2d.GetSize
@@ -65,9 +66,17 @@ End
 
 
 	#tag Method, Flags = &h21
+		Private Sub OnMouseExit()
+		  mSelected= Nil
+		  Canvas1.Invalidate
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub OnMouseMove(x As Integer, y As Integer)
 		  #pragma BackgroundTasks False
 		  
+		  // calculate deltaX and deltaY because always fit the svg image into canvas
 		  Dim size As Size= mSvgGroup2d.GetSize
 		  Dim deltaX As Integer= (Canvas1.Width- size.Width)/ 2
 		  Dim deltaY As Integer= (Canvas1.Height- size.Height)/ 2
@@ -75,16 +84,19 @@ End
 		  Dim pnt As New Point(x- deltaX, y- deltaY)
 		  mSelected= Nil
 		  
-		  For Each data As Pair In mData
+		  For Each data As Pair In mData // loop for objects2D
 		    Dim obj As Object2D= data.Right
-		    Dim points() As Point= obj.Points
-		    If Shape2D.PointInPolyWN(pnt, points) Then
-		      mSelected= obj.Clone
-		      mName= data.Left
-		      Canvas1.Invalidate
-		      Return
-		    End If
-		  Next
+		    Dim pointLists() As SVGPointList= obj.PointList
+		    For Each pointList As SVGPointList In pointLists // loop for figures
+		      Dim points() As Point= pointList.Points
+		      If Shape2D.PointInPolyWN(pnt, points) Then // if point is in points
+		        mSelected= obj.Clone
+		        mName= data.Left
+		        Canvas1.Invalidate
+		        Return
+		      End If
+		    Next // pointList
+		  Next // data
 		  
 		  Canvas1.Invalidate
 		End Sub
@@ -94,33 +106,33 @@ End
 		Private Sub OnPaint(g As Graphics)
 		  #pragma BackgroundTasks False
 		  
-		  If mBuffer Is Nil Then
+		  If mBuffer Is Nil Then // init picture buffer
 		    mBuffer= New Picture(g.Width, g.Height, 32)
-		  ElseIf mBuffer.Width<> g.Width Or mBuffer.Height<> g.Height Then
+		  ElseIf mBuffer.Width<> g.Width Or mBuffer.Height<> g.Height Then // resize
 		    mBuffer= New Picture(g.Width, g.Height, 32)
 		  End If
 		  
 		  mBuffer.Graphics.ForeColor= &cF2F9FF00
 		  mBuffer.Graphics.FillRect 0, 0, mBuffer.Width, mBuffer.Height
 		  
-		  If mSvgGroup2d Is Nil Then
+		  If mSvgGroup2d Is Nil Then // sanity chk
 		    g.DrawPicture mBuffer, 0, 0
 		    Return
 		  End If
 		  
+		  // scale and center
 		  Dim deltaX, deltaY As Integer
-		  
 		  Dim size As Size= mSize
 		  Dim ratio As Double = Min(g.Height/ size.Height, g.Width/ size.Width)
 		  mSvgGroup2d.Scale= ratio
 		  deltaX= (g.Width/ 2)- Floor(size.Width* ratio/ 2)
 		  deltaY= (g.Height/ 2)- Floor(size.Height* ratio/ 2)
 		  
-		  mBuffer.Graphics.DrawObject mSvgGroup2d, deltaX, deltaY
+		  mBuffer.Graphics.DrawObject mSvgGroup2d, deltaX, deltaY // paint group2D
 		  
-		  g.DrawPicture mBuffer, 0, 0
+		  g.DrawPicture mBuffer, 0, 0 // paint buffer
 		  
-		  If Not (mSelected Is Nil) Then
+		  If Not (mSelected Is Nil) Then // paint over the selected object2D
 		    mSelected.SetFillColor= &cFF000000
 		    g.DrawObject mSelected, deltaX, deltaY
 		    g.ForeColor= &cFF000000
@@ -176,6 +188,11 @@ End
 		  prevY= y
 		  
 		  OnMouseMove X, Y
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  OnMouseExit
 		End Sub
 	#tag EndEvent
 #tag EndEvents

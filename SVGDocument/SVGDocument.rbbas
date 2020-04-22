@@ -332,7 +332,7 @@ Inherits XMLDocument
 		          
 		          If markerPoint1 Is Nil Then markerPoint1= TransformPoint(pnt1, matrix)
 		          
-		          If Debug Then DebugLog "M:"+ pnt1
+		          If Debug Then DebugLog "M:"+ pnt1.ToString
 		        Else // line??
 		          Dim pnt2 As New Point
 		          pnt2.X= points(j)
@@ -340,7 +340,7 @@ Inherits XMLDocument
 		          
 		          AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		          
-		          If Debug Then DebugLog "M lineTo:"+ pnt1+ " To="+ pnt2
+		          If Debug Then DebugLog "M lineTo:"+ pnt1.ToString+ " To="+ pnt2.ToString
 		          
 		          markerAngle2= ATan2(pnt2.Y- pnt1.Y, pnt2.X- pnt1.X)
 		          
@@ -358,7 +358,7 @@ Inherits XMLDocument
 		          
 		          If markerPoint1 Is Nil Then markerPoint1= TransformPoint(pnt1, matrix)
 		          
-		          If Debug Then DebugLog "m:"+ pnt1
+		          If Debug Then DebugLog "m:"+ pnt1.ToString
 		        Else // line??
 		          Dim pnt2 As New Point
 		          pnt2.X= pnt1.X+ points(j)
@@ -366,7 +366,7 @@ Inherits XMLDocument
 		          
 		          AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		          
-		          If Debug Then DebugLog "m lineTo:"+ pnt1+ " To="+ pnt2
+		          If Debug Then DebugLog "m lineTo:"+ pnt1.ToString+ " To="+ pnt2.ToString
 		          
 		          markerAngle2= ATan2(pnt2.Y- pnt1.Y, pnt2.X- pnt1.X)
 		          
@@ -382,7 +382,7 @@ Inherits XMLDocument
 		        
 		        AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		        
-		        If Debug Then DebugLog "L:"+ pnt1+ " To="+ pnt2
+		        If Debug Then DebugLog "L:"+ pnt1.ToString+ " To="+ pnt2.ToString
 		        
 		        markerAngle2= ATan2(pnt2.Y- pnt1.Y, pnt2.X- pnt1.X)
 		        
@@ -394,11 +394,11 @@ Inherits XMLDocument
 		      Dim pntT As Point= pnt1.Clone
 		      Dim points() As Point= ParseDrawPoints(cmnd)
 		      For j As Integer= 0 To points.Ubound
-		        Dim pnt2 As Point= pntT+ points(j)
+		        Dim pnt2 As Point= New Point(pntT.X+ points(j).X, pntT.Y+ points(j).Y)
 		        
 		        AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		        
-		        If Debug Then DebugLog "l:"+ pntT+ " To="+ pnt2
+		        If Debug Then DebugLog "l:"+ pntT.ToString+ " To="+ pnt2.ToString
 		        
 		        pntT= pnt2.Clone
 		      Next
@@ -414,7 +414,7 @@ Inherits XMLDocument
 		      
 		      AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		      
-		      If Debug Then DebugLog "H:"+ pnt1+ " x="+ Str(value)
+		      If Debug Then DebugLog "H:"+ pnt1.ToString+ " x="+ Str(value)
 		      
 		      markerAngle2= ATan2(pnt2.Y- pnt1.Y, pnt2.X- pnt1.X)
 		      
@@ -427,7 +427,7 @@ Inherits XMLDocument
 		      
 		      AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		      
-		      If Debug Then DebugLog "h:"+ pnt1+ " x="+ Str(value)
+		      If Debug Then DebugLog "h:"+ pnt1.ToString+ " x="+ Str(value)
 		      
 		      markerAngle2= ATan2(pnt2.Y- pnt1.Y, pnt2.X- pnt1.X)
 		      
@@ -440,7 +440,7 @@ Inherits XMLDocument
 		      
 		      AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		      
-		      If Debug Then DebugLog "V:"+ pnt1+ " y="+ Str(value)
+		      If Debug Then DebugLog "V:"+ pnt1.ToString+ " y="+ Str(value)
 		      
 		      markerAngle2= ATan2(pnt2.Y- pnt1.Y, pnt2.X- pnt1.X)
 		      
@@ -453,7 +453,7 @@ Inherits XMLDocument
 		      
 		      AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		      
-		      If Debug Then DebugLog "v:"+ pnt1+ " y="+ Str(value)
+		      If Debug Then DebugLog "v:"+ pnt1.ToString+ " y="+ Str(value)
 		      
 		      markerAngle2= ATan2(pnt2.Y- pnt1.Y, pnt2.X- pnt1.X)
 		      
@@ -473,7 +473,7 @@ Inherits XMLDocument
 		        
 		        AddPathCubic isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, x1, y1, x2, y2, x, y
 		        
-		        If Debug Then DebugLog "C:"+ pnt1+ " x1="+ Str(x1)+ " y1="+ Str(y1)+ " x2="+ Str(x2)+ " y2="+ Str(y2)+ _
+		        If Debug Then DebugLog "C:"+ pnt1.ToString+ " x1="+ Str(x1)+ " y1="+ Str(y1)+ " x2="+ Str(x2)+ " y2="+ Str(y2)+ _
 		        " x="+ Str(x)+ " y="+  Str(y)
 		        
 		        markerAngle2= ATan2(y- pnt1.Y, x- pnt1.X)
@@ -500,7 +500,7 @@ Inherits XMLDocument
 		        
 		        AddPathCubic isClosedPath, shape, shapes, shapeStyle, matrix, pntT, x1, y1, x2, y2, x, y
 		        
-		        If Debug Then DebugLog "c:"+ pntT+ " x1="+ Str(x1)+ " y1="+ Str(y1)+ " x2="+ Str(x2)+ " y2="+ Str(y2)+ _
+		        If Debug Then DebugLog "c:"+ pntT.ToString+ " x1="+ Str(x1)+ " y1="+ Str(y1)+ " x2="+ Str(x2)+ " y2="+ Str(y2)+ _
 		        " x="+ Str(x)+ " y="+  Str(y)
 		        
 		        pntT.X= x
@@ -528,7 +528,7 @@ Inherits XMLDocument
 		        
 		        AddPathCubic isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, x1, y1, x2, y2, x, y
 		        
-		        If Debug Then DebugLog "S:"+ pnt1+ " x1="+ Str(x1)+ " y1="+ Str(y1)+ " x2="+ Str(x2)+ " y2="+ Str(y2)+ _
+		        If Debug Then DebugLog "S:"+ pnt1.ToString+ " x1="+ Str(x1)+ " y1="+ Str(y1)+ " x2="+ Str(x2)+ " y2="+ Str(y2)+ _
 		        " x="+ Str(x)+ " y="+  Str(y)
 		        
 		        markerAngle2= ATan2(y- pnt1.Y, x- pnt1.X)
@@ -555,7 +555,7 @@ Inherits XMLDocument
 		        
 		        AddPathCubic isClosedPath, shape, shapes, shapeStyle, matrix, pntT, x1, y1, x2, y2, x, y
 		        
-		        If Debug Then DebugLog "s:"+ pntT+ " x1="+ Str(x1)+ " y1="+ Str(y1)+ " x2="+ Str(x2)+ " y2="+ Str(y2)+ _
+		        If Debug Then DebugLog "s:"+ pntT.ToString+ " x1="+ Str(x1)+ " y1="+ Str(y1)+ " x2="+ Str(x2)+ " y2="+ Str(y2)+ _
 		        " x="+ Str(x)+ " y="+  Str(y)
 		        
 		        pntT.X= x
@@ -592,9 +592,9 @@ Inherits XMLDocument
 		      Dim pntT As Point= pnt1.Clone
 		      Dim points() As Point= ParseDrawPoints(cmnd)
 		      For j As Integer= 0 To points.Ubound Step 2
-		        Dim pnt2 As Point= pntT+ points(j)
+		        Dim pnt2 As Point= New Point(pntT.X+ points(j).X, pntT.Y+ points(j).Y)
 		        Dim pnt3 As New Point
-		        If (j+ 1)<= points.Ubound Then pnt3= pntT+ points(j+ 1)
+		        If (j+ 1)<= points.Ubound Then pnt3= New Point(pntT.X+ points(j+ 1).X, pntT.Y+ points(j+ 1).Y)
 		        
 		        AddPathQuad isClosedPath, shape, shapes, shapeStyle, matrix, pntT, pnt2, pnt3
 		        
@@ -630,7 +630,7 @@ Inherits XMLDocument
 		      Dim pntT As Point= pnt1.Clone
 		      Dim points() As Point= ParseDrawPoints(cmnd)
 		      For j As Integer= 0 To points.Ubound
-		        Dim pnt3 As Point= pntT+ points(j)
+		        Dim pnt3 As Point= New Point(pntT.X+ points(j).X, pntT.Y+ points(j).Y)
 		        Dim pnt2 As New Point(ReflectionValue(pntT.X, x1prev), ReflectionValue(pntT.Y, y1prev))
 		        
 		        AddPathQuad isClosedPath, shape, shapes, shapeStyle, matrix, pntT, pnt2, pnt3
@@ -2741,6 +2741,45 @@ Inherits XMLDocument
 	#tag EndHook
 
 
+	#tag Note, Name = Readme
+		
+		# SVGDocument
+		
+		---
+		
+		Use SVG documents in Xojo. SVG is an XML document with special tags.
+		You can load SVG files and render to Picture or Group2D objects. Also can create and manipulate SVG docs.
+		
+		
+		## Example:
+		```vb
+		'Load:
+		Dim svg As New SVGDocument(SpecialFolder.Documents.Child("Example.svg"))
+		
+		'Render to picture:
+		Dim myPicture As Picture= svg.ToPicture
+		
+		'Render to Group2D:
+		Dim myGroup As Group2D= svg.ToGroup2D
+		
+		'You can use FolderItem extended methods:
+		Dim myFile As FolderItem= SpecialFolder.Documents.Child("Example.svg")
+		Dim svg As SVGDocument= myFile.OpenAsSVG
+		
+		'or
+		Dim myPicture As Picture= myFile.OpenAsSVG
+		
+		'or
+		Dim myGroup As Group2D= myFile.OpenAsSVG
+		```
+		
+		
+		Copyright 2017-2020 Bernardo Monsalve (lbmonsalve@outlook.com)
+		
+		[repo](https://github.com/lbmonsalve/Xojo-SVGDocument.git)
+	#tag EndNote
+
+
 	#tag Property, Flags = &h21
 		Private mKeysCSS As Dictionary
 	#tag EndProperty
@@ -2779,7 +2818,7 @@ Inherits XMLDocument
 	#tag EndComputedProperty
 
 
-	#tag Constant, Name = kVersion, Type = String, Dynamic = False, Default = \"0.0.170511", Scope = Private, Attributes = \"Hidden"
+	#tag Constant, Name = kVersion, Type = String, Dynamic = False, Default = \"0.0.200422", Scope = Private, Attributes = \"Hidden"
 	#tag EndConstant
 
 	#tag Constant, Name = kXmlAttrXmlnsTag, Type = String, Dynamic = False, Default = \"xmlns", Scope = Public

@@ -1551,6 +1551,14 @@ Protected Class Shape2D
 	#tag EndMethod
 
 
+	#tag Note, Name = Readme
+		
+		Shape 2D utilities
+		
+		In the beginning I thought instantiate this class, but doesn't work, is better move this methods to a module.
+	#tag EndNote
+
+
 	#tag Property, Flags = &h21
 		Private Shared mRandomize As Random
 	#tag EndProperty

@@ -138,7 +138,7 @@ Begin ContainerControl CanvasPanel
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   True
-      Maximum         =   200
+      Maximum         =   500
       Minimum         =   10
       PageStep        =   25
       Scope           =   0
@@ -192,10 +192,10 @@ End
 		  
 		  mFit= Not mFit
 		  
-		  If mFit Then
+		  If mFit Then // switch the caption and fit in paint event on canvas1
 		    PushButton2.Caption= "Ori"
 		    Canvas1.Invalidate
-		  Else
+		  Else // switch the caption and set the scale to 100%
 		    PushButton2.Caption= "Fit"
 		    Slider1.Value= 100
 		  End If
@@ -206,13 +206,13 @@ End
 		Private Sub OnPaint(g As Graphics)
 		  #pragma BackgroundTasks False
 		  
-		  If mBuffer Is Nil Then
+		  If mBuffer Is Nil Then // init the buffer
 		    mBuffer= New Picture(g.Width, g.Height, 32)
 		  ElseIf mBuffer.Width<> g.Width Or mBuffer.Height<> g.Height Then
 		    mBuffer= New Picture(g.Width, g.Height, 32)
 		  End If
 		  
-		  Static bkg As PixmapShape
+		  Static bkg As PixmapShape // the chess board background
 		  If bkg= Nil Then
 		    bkg= Shape2D.ChessBoard(g.Width, g.Height, 15)
 		  ElseIf bkg.Width<> g.Width Or bkg.Height<> g.Height Then
@@ -228,7 +228,7 @@ End
 		  
 		  Dim deltaX, deltaY As Integer
 		  
-		  If mFit Then
+		  If mFit Then // fit the svg in the canvas
 		    mSvgGroup2d.Scale= 1.0
 		    Dim size As Size= mSvgGroup2d.GetSize
 		    Dim ratio As Double = Min(g.Height/ size.Height, g.Width/ size.Width)
@@ -241,7 +241,8 @@ End
 		    mUpdateScale= False
 		    Slider1.Value= mSvgGroup2d.Scale* 100
 		    mUpdateScale= True
-		  Else
+		  Else // paint the original svg
+		    
 		    'Dim size As Size= mSvgGroup2d.GetSize
 		    'deltaX= (size.Width/ 2)
 		    'deltaY= (size.Height/ 2)
@@ -261,7 +262,7 @@ End
 		  
 		  mSvgGroup2d.Scale= Slider1.Value/ 100
 		  
-		  If mFit Then
+		  If mFit Then // change to not fit
 		    mFit= False
 		    PushButton2.Caption= "Fit"
 		  End If

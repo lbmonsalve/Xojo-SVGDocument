@@ -3,8 +3,10 @@ Protected Class MySVGDocument
 Inherits SVGDocument
 	#tag Event
 		Sub Object2DAdded(obj As Object2D, node As XmlElement)
+		  // look for metadata, in this case just the title= name of country
+		  
 		  Dim nodeTitle As String
-		  Try
+		  Try // look for title attribute
 		    #pragma BreakOnExceptions Off
 		    nodeTitle= node.GetAttributeNode("title").Value
 		    #pragma BreakOnExceptions Default
@@ -13,7 +15,7 @@ Inherits SVGDocument
 		  End Try
 		  
 		  Dim p As New Pair(nodeTitle, obj)
-		  mData.Append p
+		  mData.Append p // i need just the country name and the group2D
 		End Sub
 	#tag EndEvent
 
@@ -26,7 +28,7 @@ Inherits SVGDocument
 		    ret.Append New Pair(p.Left, p.Right)
 		  Next
 		  
-		  Return ret
+		  Return ret // returns a "copy" of the array, not the array reference
 		End Function
 	#tag EndMethod
 
