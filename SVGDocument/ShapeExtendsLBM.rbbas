@@ -113,17 +113,17 @@ Protected Module ShapeExtendsLBM
 		  If fig.Count= 0 Then Return False
 		  If other.Count= 0 Then Return False
 		  
-		  Dim verts() As Point
+		  Dim verts() As PointS
 		  
-		  Dim pnt As Point
+		  Dim pnt As PointS
 		  For i As Integer= 0 To fig.Count- 1
 		    Dim curv As CurveShape= fig.Item(i)
 		    
 		    If i= 0 Then
-		      pnt= New Point(curv.X, curv.Y)
+		      pnt= New PointS(curv.X, curv.Y)
 		      verts.Append pnt
 		    End If
-		    verts.Append New Point(curv.X2, curv.Y2)
+		    verts.Append New PointS(curv.X2, curv.Y2)
 		  Next
 		  If verts(verts.Ubound)<> pnt Then verts.Append pnt
 		  
@@ -132,13 +132,13 @@ Protected Module ShapeExtendsLBM
 		  For i As Integer= 0 To other.Count- 1
 		    Dim curv As CurveShape= other.Item(i)
 		    
-		    Dim pnt1 As Point
+		    Dim pnt1 As PointS
 		    If i= 0 Then
-		      pnt1= New Point(curv.X, curv.Y)
+		      pnt1= New PointS(curv.X, curv.Y)
 		      If Shape2D.PointInPolyWN(pnt1, verts) Then nPointsIn= nPointsIn+ 1
 		    End If
 		    
-		    pnt1= New Point(curv.X2, curv.Y2)
+		    pnt1= New PointS(curv.X2, curv.Y2)
 		    If Shape2D.PointInPolyWN(pnt1, verts) Then nPointsIn= nPointsIn+ 1
 		  Next
 		  
@@ -320,32 +320,32 @@ Protected Module ShapeExtendsLBM
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetSize(Extends obj As Object2D) As Size
+		Function GetSize(Extends obj As Object2D) As SizeS
 		  'LBMSoft.Debug.Assert Not (obj Is Nil)
 		  
-		  Dim pMin As Point
-		  Dim pMax As Point
+		  Dim pMin As PointS
+		  Dim pMax As PointS
 		  
 		  obj.GetSize(pMin, pMax)
 		  
-		  If pMin Is Nil Or pMax Is Nil Then Return New Size
+		  If pMin Is Nil Or pMax Is Nil Then Return New SizeS
 		  
-		  Return New Size(pMax.X- pMin.X, pMax.Y- pMin.Y)
+		  Return New SizeS(pMax.X- pMin.X, pMax.Y- pMin.Y)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub GetSize(Extends obj As Object2D, ByRef pMin As Point, ByRef pMax As Point)
+		Private Sub GetSize(Extends obj As Object2D, ByRef pMin As PointS, ByRef pMax As PointS)
 		  If obj IsA ArcShape Then
 		    Dim shape As ArcShape= ArcShape(obj)
-		    Dim pnt1 As New Point(shape.X- (shape.Width/ 2)- (shape.BorderWidth/ 2), shape.Y- (shape.Height/ 2)- (shape.BorderWidth/ 2))
-		    Dim pnt2 As New Point(shape.X+ (shape.Width/ 2)+ (shape.BorderWidth/ 2), shape.Y+ (shape.Height/ 2)+ (shape.BorderWidth/ 2))
+		    Dim pnt1 As New PointS(shape.X- (shape.Width/ 2)- (shape.BorderWidth/ 2), shape.Y- (shape.Height/ 2)- (shape.BorderWidth/ 2))
+		    Dim pnt2 As New PointS(shape.X+ (shape.Width/ 2)+ (shape.BorderWidth/ 2), shape.Y+ (shape.Height/ 2)+ (shape.BorderWidth/ 2))
 		    
 		    PointMinMax pMin, pMax, pnt1, pnt2
 		  ElseIf obj IsA CurveShape Then
 		    Dim shape As CurveShape= CurveShape(obj)
 		    
-		    PointMinMax pMin, pMax, New Point(shape.X, shape.Y), New Point(shape.X2, shape.Y2)
+		    PointMinMax pMin, pMax, New PointS(shape.X, shape.Y), New PointS(shape.X2, shape.Y2)
 		  ElseIf obj IsA FigureShape Then
 		    Dim shape As FigureShape= FigureShape(obj)
 		    
@@ -354,41 +354,41 @@ Protected Module ShapeExtendsLBM
 		    Next
 		  ElseIf obj IsA OvalShape Then
 		    Dim shape As OvalShape= OvalShape(obj)
-		    Dim pnt1 As New Point(shape.X- (shape.Width/ 2)- (shape.BorderWidth/ 2), shape.Y- (shape.Height/ 2)- (shape.BorderWidth/ 2))
-		    Dim pnt2 As New Point(shape.X+ (shape.Width/ 2)+ (shape.BorderWidth/ 2), shape.Y+ (shape.Height/ 2)+ (shape.BorderWidth/ 2))
+		    Dim pnt1 As New PointS(shape.X- (shape.Width/ 2)- (shape.BorderWidth/ 2), shape.Y- (shape.Height/ 2)- (shape.BorderWidth/ 2))
+		    Dim pnt2 As New PointS(shape.X+ (shape.Width/ 2)+ (shape.BorderWidth/ 2), shape.Y+ (shape.Height/ 2)+ (shape.BorderWidth/ 2))
 		    
 		    PointMinMax pMin, pMax, pnt1, pnt2
 		  ElseIf obj IsA PixMapShape Then
 		    Dim shape As PixMapShape= PixMapShape(obj)
-		    Dim pnt1 As New Point(shape.X- (shape.SourceWidth/ 2), shape.Y- (shape.SourceHeight/ 2))
-		    Dim pnt2 As New Point(shape.X+ (shape.SourceWidth/ 2), shape.Y+ (shape.SourceHeight/ 2))
+		    Dim pnt1 As New PointS(shape.X- (shape.SourceWidth/ 2), shape.Y- (shape.SourceHeight/ 2))
+		    Dim pnt2 As New PointS(shape.X+ (shape.SourceWidth/ 2), shape.Y+ (shape.SourceHeight/ 2))
 		    
 		    PointMinMax pMin, pMax, pnt1, pnt2
 		  ElseIf obj IsA RectShape Then
 		    Dim shape As RectShape= RectShape(obj)
-		    Dim pnt1 As New Point(shape.X- (shape.Width/ 2)- (shape.BorderWidth/ 2), shape.Y- (shape.Height/ 2)- (shape.BorderWidth/ 2))
-		    Dim pnt2 As New Point(shape.X+ (shape.Width/ 2)+ (shape.BorderWidth/ 2), shape.Y+ (shape.Height/ 2)+ (shape.BorderWidth/ 2))
+		    Dim pnt1 As New PointS(shape.X- (shape.Width/ 2)- (shape.BorderWidth/ 2), shape.Y- (shape.Height/ 2)- (shape.BorderWidth/ 2))
+		    Dim pnt2 As New PointS(shape.X+ (shape.Width/ 2)+ (shape.BorderWidth/ 2), shape.Y+ (shape.Height/ 2)+ (shape.BorderWidth/ 2))
 		    
 		    PointMinMax pMin, pMax, pnt1, pnt2
 		  ElseIf obj IsA RoundRectShape Then
 		    Dim shape As RoundRectShape= RoundRectShape(obj)
-		    Dim pnt1 As New Point(shape.X- (shape.Width/ 2)- (shape.BorderWidth/ 2), shape.Y- (shape.Height/ 2)- (shape.BorderWidth/ 2))
-		    Dim pnt2 As New Point(shape.X+ (shape.Width/ 2)+ (shape.BorderWidth/ 2), shape.Y+ (shape.Height/ 2)+ (shape.BorderWidth/ 2))
+		    Dim pnt1 As New PointS(shape.X- (shape.Width/ 2)- (shape.BorderWidth/ 2), shape.Y- (shape.Height/ 2)- (shape.BorderWidth/ 2))
+		    Dim pnt2 As New PointS(shape.X+ (shape.Width/ 2)+ (shape.BorderWidth/ 2), shape.Y+ (shape.Height/ 2)+ (shape.BorderWidth/ 2))
 		    
 		    PointMinMax pMin, pMax, pnt1, pnt2
 		  ElseIf obj IsA StringShape Then
 		    Dim shape As StringShape= StringShape(obj)
-		    Dim pnt1, pnt2 As Point
+		    Dim pnt1, pnt2 As PointS
 		    
 		    If shape.HorizontalAlignment= StringShape.Alignment.Center Then
-		      pnt1= New Point(shape.X- (shape.StringWidth/ 2), shape.Y- shape.TextAscent)
-		      pnt2= New Point(shape.X+ (shape.StringWidth/ 2), shape.Y+ (shape.TextSize- shape.TextAscent))
+		      pnt1= New PointS(shape.X- (shape.StringWidth/ 2), shape.Y- shape.TextAscent)
+		      pnt2= New PointS(shape.X+ (shape.StringWidth/ 2), shape.Y+ (shape.TextSize- shape.TextAscent))
 		    ElseIf shape.HorizontalAlignment= StringShape.Alignment.Right Then
-		      pnt1= New Point(shape.X- shape.StringWidth, shape.Y- shape.TextAscent)
-		      pnt2= New Point(shape.X, shape.Y+ (shape.TextSize- shape.TextAscent))
+		      pnt1= New PointS(shape.X- shape.StringWidth, shape.Y- shape.TextAscent)
+		      pnt2= New PointS(shape.X, shape.Y+ (shape.TextSize- shape.TextAscent))
 		    Else // left
-		      pnt1= New Point(shape.X, shape.Y- shape.TextAscent)
-		      pnt2= New Point(shape.X+ shape.StringWidth, shape.Y+ (shape.TextSize- shape.TextAscent))
+		      pnt1= New PointS(shape.X, shape.Y- shape.TextAscent)
+		      pnt2= New PointS(shape.X+ shape.StringWidth, shape.Y+ (shape.TextSize- shape.TextAscent))
 		    End If
 		    
 		    PointMinMax pMin, pMax, pnt1, pnt2
@@ -399,7 +399,7 @@ Protected Module ShapeExtendsLBM
 		      shape.Item(i).GetSize(pMin, pMax)
 		    Next
 		  Else
-		    PointMinMax pMin, pMax, New Point(obj.X, obj.Y)
+		    PointMinMax pMin, pMax, New PointS(obj.X, obj.Y)
 		  End If
 		End Sub
 	#tag EndMethod
@@ -442,8 +442,8 @@ Protected Module ShapeExtendsLBM
 		    Dim shape As CurveShape= CurveShape(obj)
 		    Dim pointList As New SVGPointList
 		    
-		    pointList.Append New Point(shape.X, shape.Y)
-		    pointList.Append New Point(shape.X2, shape.Y2)
+		    pointList.Append New PointS(shape.X, shape.Y)
+		    pointList.Append New PointS(shape.X2, shape.Y2)
 		    
 		    ret.Append pointList
 		  ElseIf obj IsA FigureShape Then
@@ -484,8 +484,8 @@ Protected Module ShapeExtendsLBM
 		    Dim shape As CurveShape= CurveShape(obj)
 		    Dim pointList As New SVGPointList
 		    
-		    pointList.Append New Point(shape.X, shape.Y)
-		    pointList.Append New Point(shape.X2, shape.Y2)
+		    pointList.Append New PointS(shape.X, shape.Y)
+		    pointList.Append New PointS(shape.X2, shape.Y2)
 		    
 		    ret.Append pointList
 		  ElseIf obj IsA FigureShape Then
@@ -493,14 +493,14 @@ Protected Module ShapeExtendsLBM
 		    Dim pointList As New SVGPointList
 		    
 		    For i As Integer= 0 To shape.Count- 1
-		      Dim points() As Point= shape.Item(i).Points
+		      Dim points() As PointS= shape.Item(i).Points
 		      
 		      For j As Integer= 0 To points.Ubound
 		        pointList.Append points(j)
 		      Next
 		    Next
 		    
-		    Dim points() As Point= pointList.Points
+		    Dim points() As PointS= pointList.Points
 		    Try
 		      If points(points.Ubound)<> points(0) Then // to close shape
 		        points.Append points(0)
@@ -523,17 +523,17 @@ Protected Module ShapeExtendsLBM
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub PointMinMax(ByRef pMin As Point, ByRef pMax As Point, ParamArray points As Point)
-		  For Each point As Point In points
+		Private Sub PointMinMax(ByRef pMin As PointS, ByRef pMax As PointS, ParamArray points As PointS)
+		  For Each point As PointS In points
 		    If pMin Is Nil Then
-		      pMin= New Point(point.X, point.Y)
+		      pMin= New PointS(point.X, point.Y)
 		    Else
 		      If point.X< pMin.X Then pMin.X= point.X
 		      If point.Y< pMin.Y Then pMin.Y= point.Y
 		    End If
 		    
 		    If pMax Is Nil Then
-		      pMax= New Point(point.X, point.Y)
+		      pMax= New PointS(point.X, point.Y)
 		    Else
 		      If point.X> pMax.X Then pMax.X= point.X
 		      If point.Y> pMax.Y Then pMax.Y= point.Y
@@ -543,8 +543,8 @@ Protected Module ShapeExtendsLBM
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Points(Extends obj As Object2D) As Point()
-		  Dim ret() As Point
+		Function Points(Extends obj As Object2D) As PointS()
+		  Dim ret() As PointS
 		  
 		  If obj IsA ArcShape Then
 		    System.DebugLog CurrentMethodName+ " ArcShape" // TODO:
@@ -561,13 +561,13 @@ Protected Module ShapeExtendsLBM
 		  ElseIf obj IsA CurveShape Then
 		    Dim shape As CurveShape= CurveShape(obj)
 		    
-		    ret.Append New Point(shape.X, shape.Y)
-		    ret.Append New Point(shape.X2, shape.Y2)
+		    ret.Append New PointS(shape.X, shape.Y)
+		    ret.Append New PointS(shape.X2, shape.Y2)
 		  ElseIf obj IsA FigureShape Then
 		    Dim shape As FigureShape= FigureShape(obj)
 		    
 		    For i As Integer= 0 To shape.Count- 1
-		      Dim points() As Point= shape.Item(i).Points
+		      Dim points() As PointS= shape.Item(i).Points
 		      
 		      For j As Integer= 0 To points.Ubound
 		        ret.Append points(j)
@@ -577,7 +577,7 @@ Protected Module ShapeExtendsLBM
 		    Dim shape As Group2D= Group2D(obj)
 		    
 		    For i As Integer= 0 To shape.Count- 1
-		      Dim points() As Point= shape.Item(i).Points
+		      Dim points() As PointS= shape.Item(i).Points
 		      For j As Integer= 0 To points.Ubound
 		        ret.Append points(j)
 		      Next
@@ -670,8 +670,8 @@ Protected Module ShapeExtendsLBM
 		      For j As Integer= 0 To FigureShape(item).Count- 1
 		        Dim line As CurveShape= CurveShape(FigureShape(item).Item(j))
 		        
-		        Dim pnt1 As Point= SVGDocument.TransformPoint(New Point(line.X, line.Y), matrixA)
-		        Dim pnt2 As Point= SVGDocument.TransformPoint(New Point(line.X2, line.Y2), matrixA)
+		        Dim pnt1 As PointS= SVGDocument.TransformPoint(New PointS(line.X, line.Y), matrixA)
+		        Dim pnt2 As PointS= SVGDocument.TransformPoint(New PointS(line.X2, line.Y2), matrixA)
 		        
 		        line.X= pnt1.X
 		        line.Y= pnt1.Y

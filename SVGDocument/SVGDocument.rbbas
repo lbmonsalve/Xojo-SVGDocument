@@ -114,7 +114,7 @@ Inherits XMLDocument
 		    RaiseEvent Object2DAdded(shape, node)
 		  Else
 		    Dim shape As New PixmapShape(ParseImage(node.GetAttribute("xlink:href")))
-		    Dim pntA As Point
+		    Dim pntA As PointS
 		    
 		    Dim matrixM() As Double= GetMatrixRecursive(node, "m")
 		    If matrixM(0)<> 1 Or matrixM(1)<> 0 Or matrixM(2)<> 0 Or matrixM(3)<> 0 Or matrixM(4)<> 1 Or _
@@ -187,8 +187,8 @@ Inherits XMLDocument
 		  SetStyleRecursive line, node
 		  grp.Append line
 		  
-		  Dim pnt1 As New Point(line.X, line.Y)
-		  Dim pnt2 As New Point(line.X2, line.Y2)
+		  Dim pnt1 As New PointS(line.X, line.Y)
+		  Dim pnt2 As New PointS(line.X2, line.Y2)
 		  
 		  Dim angle1 As Double= ATan2(line.Y2- line.Y, line.X2- line.X)
 		  
@@ -199,7 +199,7 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub AddMarkers(grp As Group2D, node As XmlElement, pnt1 As Point, pnt2 As Point, angle1 As Double = 0, angle2 As Double = 0)
+		Private Sub AddMarkers(grp As Group2D, node As XmlElement, pnt1 As PointS, pnt2 As PointS, angle1 As Double = 0, angle2 As Double = 0)
 		  If node.GetSubAttribute("style", "marker-start")<> "" Then
 		    Dim urlMarker As String= node.GetSubAttribute("style", "marker-start")
 		    Dim mark As XmlElement= GetDefinitionByID(ParseURL(urlMarker))
@@ -289,14 +289,14 @@ Inherits XMLDocument
 		  Dim shapes() As FigureShape
 		  Dim currShape As Integer= -1
 		  
-		  Dim pnt1 As New Point
+		  Dim pnt1 As New PointS
 		  Dim x1prev, y1prev As Double
 		  Dim isClosedPath As Boolean
 		  
 		  Dim shapeStyle As New Object2D
 		  SetStyleRecursive shapeStyle, node
 		  
-		  Dim markerPoint1, markerPoint2 As Point
+		  Dim markerPoint1, markerPoint2 As PointS
 		  Dim markerAngle1, markerAngle2 As Double
 		  
 		  For i As Integer= 0 To draws.Ubound
@@ -334,7 +334,7 @@ Inherits XMLDocument
 		          
 		          If Debug Then DebugLog "M:"+ pnt1.ToString
 		        Else // line??
-		          Dim pnt2 As New Point
+		          Dim pnt2 As New PointS
 		          pnt2.X= points(j)
 		          If (j+ 1)<= points.Ubound Then pnt2.Y= points(j+ 1)
 		          
@@ -360,7 +360,7 @@ Inherits XMLDocument
 		          
 		          If Debug Then DebugLog "m:"+ pnt1.ToString
 		        Else // line??
-		          Dim pnt2 As New Point
+		          Dim pnt2 As New PointS
 		          pnt2.X= pnt1.X+ points(j)
 		          If (j+ 1)<= points.Ubound Then pnt2.Y= pnt1.Y+ points(j+ 1)
 		          
@@ -376,9 +376,9 @@ Inherits XMLDocument
 		      // m
 		    ElseIf Asc(c)= Asc("L") Then
 		      // L
-		      Dim points() As Point= ParseDrawPoints(cmnd)
+		      Dim points() As PointS= ParseDrawPoints(cmnd)
 		      For j As Integer= 0 To points.Ubound
-		        Dim pnt2 As Point= points(j)
+		        Dim pnt2 As PointS= points(j)
 		        
 		        AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		        
@@ -391,10 +391,10 @@ Inherits XMLDocument
 		      // L
 		    ElseIf Asc(c)= Asc("l") Then
 		      // l
-		      Dim pntT As Point= pnt1.Clone
-		      Dim points() As Point= ParseDrawPoints(cmnd)
+		      Dim pntT As PointS= pnt1.Clone
+		      Dim points() As PointS= ParseDrawPoints(cmnd)
 		      For j As Integer= 0 To points.Ubound
-		        Dim pnt2 As Point= New Point(pntT.X+ points(j).X, pntT.Y+ points(j).Y)
+		        Dim pnt2 As PointS= New PointS(pntT.X+ points(j).X, pntT.Y+ points(j).Y)
 		        
 		        AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		        
@@ -410,7 +410,7 @@ Inherits XMLDocument
 		    ElseIf Asc(c)= Asc("H") Then
 		      // H
 		      Dim value As Double= cmnd.Mid(2).ParseUnits
-		      Dim pnt2 As New Point(value, pnt1.Y)
+		      Dim pnt2 As New PointS(value, pnt1.Y)
 		      
 		      AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		      
@@ -423,7 +423,7 @@ Inherits XMLDocument
 		    ElseIf Asc(c)= Asc("h") Then
 		      // h
 		      Dim value As Double= pnt1.X+ cmnd.Mid(2).ParseUnits
-		      Dim pnt2 As New Point(value, pnt1.Y)
+		      Dim pnt2 As New PointS(value, pnt1.Y)
 		      
 		      AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		      
@@ -436,7 +436,7 @@ Inherits XMLDocument
 		    ElseIf Asc(c)= Asc("V") Then
 		      // V
 		      Dim value As Double= cmnd.Mid(2).ParseUnits
-		      Dim pnt2 As New Point(pnt1.X, value)
+		      Dim pnt2 As New PointS(pnt1.X, value)
 		      
 		      AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		      
@@ -449,7 +449,7 @@ Inherits XMLDocument
 		    ElseIf Asc(c)= Asc("v") Then
 		      // v
 		      Dim value As Double= pnt1.Y+ cmnd.Mid(2).ParseUnits
-		      Dim pnt2 As New Point(pnt1.X, value)
+		      Dim pnt2 As New PointS(pnt1.X, value)
 		      
 		      AddPathLine isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2
 		      
@@ -487,7 +487,7 @@ Inherits XMLDocument
 		      // C
 		    ElseIf Asc(c)= Asc("c") Then
 		      // c
-		      Dim pntT As Point= pnt1.Clone
+		      Dim pntT As PointS= pnt1.Clone
 		      Dim points() As Double= ParseDrawValues(cmnd)
 		      For j As Integer= 0 To points.Ubound Step 6
 		        Dim x1, y1, x2, y2, x, y As Double
@@ -542,7 +542,7 @@ Inherits XMLDocument
 		      // S
 		    ElseIf Asc(c)= Asc("s") Then
 		      // s
-		      Dim pntT As Point= pnt1.Clone
+		      Dim pntT As PointS= pnt1.Clone
 		      Dim points() As Double= ParseDrawValues(cmnd)
 		      For j As Integer= 0 To points.Ubound Step 4
 		        Dim x2, y2, x, y As Double
@@ -571,10 +571,10 @@ Inherits XMLDocument
 		      // s
 		    ElseIf Asc(c)= Asc("Q") Then
 		      // Q
-		      Dim points() As Point= ParseDrawPoints(cmnd)
+		      Dim points() As PointS= ParseDrawPoints(cmnd)
 		      For j As Integer= 0 To points.Ubound Step 2
-		        Dim pnt2 As Point= points(j)
-		        Dim pnt3 As New Point
+		        Dim pnt2 As PointS= points(j)
+		        Dim pnt3 As New PointS
 		        If (j+ 1)<= points.Ubound Then pnt3= points(j+ 1)
 		        
 		        AddPathQuad isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2, pnt3
@@ -589,12 +589,12 @@ Inherits XMLDocument
 		      // Q
 		    ElseIf Asc(c)= Asc("q") Then
 		      // q
-		      Dim pntT As Point= pnt1.Clone
-		      Dim points() As Point= ParseDrawPoints(cmnd)
+		      Dim pntT As PointS= pnt1.Clone
+		      Dim points() As PointS= ParseDrawPoints(cmnd)
 		      For j As Integer= 0 To points.Ubound Step 2
-		        Dim pnt2 As Point= New Point(pntT.X+ points(j).X, pntT.Y+ points(j).Y)
-		        Dim pnt3 As New Point
-		        If (j+ 1)<= points.Ubound Then pnt3= New Point(pntT.X+ points(j+ 1).X, pntT.Y+ points(j+ 1).Y)
+		        Dim pnt2 As PointS= New PointS(pntT.X+ points(j).X, pntT.Y+ points(j).Y)
+		        Dim pnt3 As New PointS
+		        If (j+ 1)<= points.Ubound Then pnt3= New PointS(pntT.X+ points(j+ 1).X, pntT.Y+ points(j+ 1).Y)
 		        
 		        AddPathQuad isClosedPath, shape, shapes, shapeStyle, matrix, pntT, pnt2, pnt3
 		        
@@ -610,10 +610,10 @@ Inherits XMLDocument
 		      // q
 		    ElseIf Asc(c)= Asc("T") Then
 		      // T
-		      Dim points() As Point= ParseDrawPoints(cmnd)
+		      Dim points() As PointS= ParseDrawPoints(cmnd)
 		      For j As Integer= 0 To points.Ubound
-		        Dim pnt3 As Point= points(j)
-		        Dim pnt2 As New Point(ReflectionValue(pnt1.X, x1prev), ReflectionValue(pnt1.Y, y1prev))
+		        Dim pnt3 As PointS= points(j)
+		        Dim pnt2 As New PointS(ReflectionValue(pnt1.X, x1prev), ReflectionValue(pnt1.Y, y1prev))
 		        
 		        AddPathQuad isClosedPath, shape, shapes, shapeStyle, matrix, pnt1, pnt2, pnt3
 		        
@@ -627,11 +627,11 @@ Inherits XMLDocument
 		      // T
 		    ElseIf Asc(c)= Asc("t") Then
 		      // t
-		      Dim pntT As Point= pnt1.Clone
-		      Dim points() As Point= ParseDrawPoints(cmnd)
+		      Dim pntT As PointS= pnt1.Clone
+		      Dim points() As PointS= ParseDrawPoints(cmnd)
 		      For j As Integer= 0 To points.Ubound
-		        Dim pnt3 As Point= New Point(pntT.X+ points(j).X, pntT.Y+ points(j).Y)
-		        Dim pnt2 As New Point(ReflectionValue(pntT.X, x1prev), ReflectionValue(pntT.Y, y1prev))
+		        Dim pnt3 As PointS= New PointS(pntT.X+ points(j).X, pntT.Y+ points(j).Y)
+		        Dim pnt2 As New PointS(ReflectionValue(pntT.X, x1prev), ReflectionValue(pntT.Y, y1prev))
 		        
 		        AddPathQuad isClosedPath, shape, shapes, shapeStyle, matrix, pntT, pnt2, pnt3
 		        
@@ -686,7 +686,7 @@ Inherits XMLDocument
 		      // A
 		    ElseIf Asc(c)= Asc("a") Then
 		      // a
-		      Dim pntT As Point= pnt1.Clone
+		      Dim pntT As PointS= pnt1.Clone
 		      Dim points() As Double= ParseDrawValues(cmnd)
 		      For j As Integer= 0 To points.Ubound Step 7
 		        Dim rx, ry, x, y As Double
@@ -777,15 +777,15 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub AddPathCubic(isClosedPath As Boolean, shape As Group2D, shapes() As FigureShape, shapeStyle As Object2D, matrix() As Double, pnt1 As Point, x1 As Double, y1 As Double, x2 As Double, y2 As Double, x As Double, y As Double)
+		Private Sub AddPathCubic(isClosedPath As Boolean, shape As Group2D, shapes() As FigureShape, shapeStyle As Object2D, matrix() As Double, pnt1 As PointS, x1 As Double, y1 As Double, x2 As Double, y2 As Double, x As Double, y As Double)
 		  If isClosedPath Then
 		    If matrix.Ubound= -1 Then
 		      shapes(shapes.Ubound).AddCubic pnt1.X, pnt1.Y, x, y, x1, y1, x2, y2
 		    Else
-		      Dim pntA As Point= TransformPoint(pnt1.X, pnt1.Y, matrix)
-		      Dim pntB As Point= TransformPoint(x, y, matrix)
-		      Dim pnt1a As Point= TransformPoint(x1, y1, matrix)
-		      Dim pnt2 As Point= TransformPoint(x2, y2, matrix)
+		      Dim pntA As PointS= TransformPoint(pnt1.X, pnt1.Y, matrix)
+		      Dim pntB As PointS= TransformPoint(x, y, matrix)
+		      Dim pnt1a As PointS= TransformPoint(x1, y1, matrix)
+		      Dim pnt2 As PointS= TransformPoint(x2, y2, matrix)
 		      shapes(shapes.Ubound).AddCubic pntA.X, pntA.Y, pntB.X, pntB.Y, pnt1a.X, pnt1a.Y, pnt2.X, pnt2.Y
 		    End If
 		  Else // openpath
@@ -801,10 +801,10 @@ Inherits XMLDocument
 		      line.ControlX(1)= x2
 		      line.ControlY(1)= y2
 		    Else
-		      Dim pntA As Point= TransformPoint(pnt1.X, pnt1.Y, matrix)
-		      Dim pntB As Point= TransformPoint(x, y, matrix)
-		      Dim pnt1a As Point= TransformPoint(x1, y1, matrix)
-		      Dim pnt2 As Point= TransformPoint(x2, y2, matrix)
+		      Dim pntA As PointS= TransformPoint(pnt1.X, pnt1.Y, matrix)
+		      Dim pntB As PointS= TransformPoint(x, y, matrix)
+		      Dim pnt1a As PointS= TransformPoint(x1, y1, matrix)
+		      Dim pnt2 As PointS= TransformPoint(x2, y2, matrix)
 		      
 		      line.X= pntA.X
 		      line.Y= pntA.Y
@@ -823,13 +823,13 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub AddPathLine(isClosedPath As Boolean, shape As Group2D, shapes() As FigureShape, shapeStyle As Object2D, matrix() As Double, pnt1 As Point, pnt2 As Point)
+		Private Sub AddPathLine(isClosedPath As Boolean, shape As Group2D, shapes() As FigureShape, shapeStyle As Object2D, matrix() As Double, pnt1 As PointS, pnt2 As PointS)
 		  If isClosedPath Then
 		    If matrix.Ubound= -1 Then
 		      shapes(shapes.Ubound).AddLine pnt1.X, pnt1.Y, pnt2.X, pnt2.Y
 		    Else
-		      Dim pntA As Point= TransformPoint(pnt1.X, pnt1.Y, matrix)
-		      Dim pntB As Point= TransformPoint(pnt2.X, pnt2.Y, matrix)
+		      Dim pntA As PointS= TransformPoint(pnt1.X, pnt1.Y, matrix)
+		      Dim pntB As PointS= TransformPoint(pnt2.X, pnt2.Y, matrix)
 		      shapes(shapes.Ubound).AddLine pntA.X, pntA.Y, pntB.X, pntB.Y
 		    End If
 		  Else // openpath
@@ -840,8 +840,8 @@ Inherits XMLDocument
 		      line.X2= pnt2.X
 		      line.Y2= pnt2.Y
 		    Else
-		      Dim pntA As Point= TransformPoint(pnt1.X, pnt1.Y, matrix)
-		      Dim pntB As Point= TransformPoint(pnt2.X, pnt2.Y, matrix)
+		      Dim pntA As PointS= TransformPoint(pnt1.X, pnt1.Y, matrix)
+		      Dim pntB As PointS= TransformPoint(pnt2.X, pnt2.Y, matrix)
 		      
 		      line.X= pntA.X
 		      line.Y= pntA.Y
@@ -857,14 +857,14 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub AddPathQuad(isClosedPath As Boolean, shape As Group2D, shapes() As FigureShape, shapeStyle As Object2D, matrix() As Double, pnt1 As Point, pnt2 As Point, pnt3 As Point)
+		Private Sub AddPathQuad(isClosedPath As Boolean, shape As Group2D, shapes() As FigureShape, shapeStyle As Object2D, matrix() As Double, pnt1 As PointS, pnt2 As PointS, pnt3 As PointS)
 		  If isClosedPath Then
 		    If matrix.Ubound= -1 Then
 		      shapes(shapes.Ubound).AddQuad pnt1.X, pnt1.Y, pnt3.X, pnt3.Y, pnt2.X, pnt2.Y
 		    Else
-		      Dim pntA As Point= TransformPoint(pnt1.X, pnt1.Y, matrix)
-		      Dim pntB As Point= TransformPoint(pnt3.X, pnt3.Y, matrix)
-		      Dim pntC As Point= TransformPoint(pnt2.X, pnt2.Y, matrix)
+		      Dim pntA As PointS= TransformPoint(pnt1.X, pnt1.Y, matrix)
+		      Dim pntB As PointS= TransformPoint(pnt3.X, pnt3.Y, matrix)
+		      Dim pntC As PointS= TransformPoint(pnt2.X, pnt2.Y, matrix)
 		      shapes(shapes.Ubound).AddQuad pntA.X, pntA.Y, pntB.X, pntB.Y, pntC.X, pntC.Y
 		    End If
 		  Else // openpath
@@ -878,9 +878,9 @@ Inherits XMLDocument
 		      line.ControlX(0)= pnt2.X
 		      line.ControlY(0)= pnt2.Y
 		    Else
-		      Dim pntA As Point= TransformPoint(pnt1.X, pnt1.Y, matrix)
-		      Dim pntB As Point= TransformPoint(pnt3.X, pnt3.Y, matrix)
-		      Dim pntC As Point= TransformPoint(pnt2.X, pnt2.Y, matrix)
+		      Dim pntA As PointS= TransformPoint(pnt1.X, pnt1.Y, matrix)
+		      Dim pntB As PointS= TransformPoint(pnt3.X, pnt3.Y, matrix)
+		      Dim pntC As PointS= TransformPoint(pnt2.X, pnt2.Y, matrix)
 		      
 		      line.X= pntA.X
 		      line.Y= pntA.Y
@@ -900,15 +900,15 @@ Inherits XMLDocument
 		Private Sub AddPolygon(grp As Group2D, node As XmlElement)
 		  Dim shape As New FigureShape
 		  
-		  Dim points() As Point= ParsePoints(node.GetAttribute("points"))
+		  Dim points() As PointS= ParsePoints(node.GetAttribute("points"))
 		  
 		  Dim matrix() As Double= GetMatrixRecursive(node)
 		  
 		  If matrix.Ubound= -1 Then
 		    If points.Ubound> 0 Then
 		      For i As Integer= 1 To points.Ubound
-		        Dim point1 As Point= points(i- 1)
-		        Dim point2 As New Point
+		        Dim point1 As PointS= points(i- 1)
+		        Dim point2 As New PointS
 		        If i<= points.Ubound Then point2= points(i)
 		        
 		        shape.AddLine point1.X, point1.Y, point2.X, point2.Y
@@ -917,8 +917,8 @@ Inherits XMLDocument
 		  Else
 		    If points.Ubound> 0 Then
 		      For i As Integer= 1 To points.Ubound
-		        Dim point1 As Point= points(i- 1)
-		        Dim point2 As New Point
+		        Dim point1 As PointS= points(i- 1)
+		        Dim point2 As New PointS
 		        If i<= points.Ubound Then point2= points(i)
 		        
 		        Dim x1, y1, x2, y2 As Double
@@ -946,15 +946,15 @@ Inherits XMLDocument
 	#tag Method, Flags = &h21
 		Private Sub AddPolyline(grp As Group2D, node As XmlElement)
 		  Dim shape As New Group2D
-		  Dim points() As Point= ParsePoints(node.GetAttribute("points"))
+		  Dim points() As PointS= ParsePoints(node.GetAttribute("points"))
 		  
 		  Dim matrix() As Double= GetMatrixRecursive(node)
 		  
 		  If matrix.Ubound= -1 Then
 		    If points.Ubound> 0 Then
 		      For i As Integer= 1 To points.Ubound
-		        Dim point1 As Point= points(i- 1)
-		        Dim point2 As New Point
+		        Dim point1 As PointS= points(i- 1)
+		        Dim point2 As New PointS
 		        If i<= points.Ubound Then point2= points(i)
 		        
 		        Dim line As New CurveShape
@@ -971,8 +971,8 @@ Inherits XMLDocument
 		  Else
 		    If points.Ubound> 0 Then
 		      For i As Integer= 1 To points.Ubound
-		        Dim point1 As Point= points(i- 1)
-		        Dim point2 As New Point
+		        Dim point1 As PointS= points(i- 1)
+		        Dim point2 As New PointS
 		        If i<= points.Ubound Then point2= points(i)
 		        
 		        Dim x, y, x2, y2 As Double
@@ -1097,7 +1097,7 @@ Inherits XMLDocument
 		    Dim y As Double= node.GetAttribute("y").ParseUnits
 		    
 		    If matrix.Ubound<> -1 Then
-		      Dim pntT As Point= TransformPoint(x, y, matrix)
+		      Dim pntT As PointS= TransformPoint(x, y, matrix)
 		      shape.X= pntT.X
 		      shape.Y= pntT.Y
 		    Else
@@ -1132,7 +1132,7 @@ Inherits XMLDocument
 		        If y= 0 Then y= node.GetAttribute("y").ParseUnits
 		        
 		        If matrix.Ubound<> -1 Then
-		          Dim pntT As New Point(x+ xWidth+ nodeChild.GetAttribute("dx").ParseUnits, _
+		          Dim pntT As New PointS(x+ xWidth+ nodeChild.GetAttribute("dx").ParseUnits, _
 		          y+ nodeChild.GetAttribute("dy").ParseUnits)
 		          pntT= TransformPoint(pntT.X, pntT.Y, matrix)
 		          shape.X= pntT.X
@@ -1968,10 +1968,10 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function ParseDrawPoints(str As String) As Point()
+		 Shared Function ParseDrawPoints(str As String) As PointS()
 		  #pragma BackgroundTasks False
 		  
-		  Dim points() As Point
+		  Dim points() As PointS
 		  
 		  // sanity chk
 		  If str= "" Then Return points
@@ -1992,7 +1992,7 @@ Inherits XMLDocument
 		  Wend
 		  
 		  For i As Integer= 0 To values.Ubound Step 2
-		    Dim pnt1 As New Point(values(i), 0)
+		    Dim pnt1 As New PointS(values(i), 0)
 		    If (i+ 1)<= values.Ubound Then pnt1.Y= values(i+ 1)
 		    points.Append pnt1
 		  Next
@@ -2072,8 +2072,8 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function ParsePoint(str As String) As Point
-		  If str= "" Then Return New Point
+		 Shared Function ParsePoint(str As String) As PointS
+		  If str= "" Then Return New PointS
 		  
 		  Dim values() As Double
 		  
@@ -2090,7 +2090,7 @@ Inherits XMLDocument
 		    rgm= rg.Search
 		  Wend
 		  
-		  Dim pnt As New Point
+		  Dim pnt As New PointS
 		  
 		  For i As Integer= 0 To values.Ubound
 		    If i= 0 Then pnt.X= values(i)
@@ -2102,8 +2102,8 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function ParsePoints(str As String) As Point()
-		  Dim points() As Point
+		 Shared Function ParsePoints(str As String) As PointS()
+		  Dim points() As PointS
 		  
 		  If str= "" Then Return points
 		  
@@ -2117,7 +2117,7 @@ Inherits XMLDocument
 		  
 		  While rgm<> Nil
 		    Dim s As String= rgm.SubExpressionString(0).ReplaceAll(" ", "")
-		    points.Append New Point(s.Left(s.InStr(",")- 1).ParseUnits, s.Mid(s.InStr(",")+ 1).ParseUnits)
+		    points.Append New PointS(s.Left(s.InStr(",")- 1).ParseUnits, s.Mid(s.InStr(",")+ 1).ParseUnits)
 		    
 		    rgm= rg.Search
 		  Wend
@@ -2403,7 +2403,7 @@ Inherits XMLDocument
 		  
 		  If grp.Count= 0 Then Return
 		  
-		  Dim rect1 As New Rect(patt.GetAttribute("x").ParseUnits, patt.GetAttribute("y").ParseUnits, _
+		  Dim rect1 As New RectS(patt.GetAttribute("x").ParseUnits, patt.GetAttribute("y").ParseUnits, _
 		  patt.GetAttribute("width").ParseUnits, patt.GetAttribute("height").ParseUnits)
 		  
 		  For x As Integer= rect1.X To picWidth+ rect1.Width Step rect1.Width
@@ -2614,7 +2614,7 @@ Inherits XMLDocument
 		  Next
 		  
 		  // viewBox
-		  Dim viewBox As New Rect
+		  Dim viewBox As New RectS
 		  Dim values() As Integer= ParseViewBox(Root.GetAttribute("viewBox"))
 		  
 		  For i As Integer= 0 To values.Ubound
@@ -2624,7 +2624,7 @@ Inherits XMLDocument
 		    If i= 3 Then viewBox.Height= values(i)
 		  Next
 		  
-		  Dim viewPort As New Size
+		  Dim viewPort As New SizeS
 		  viewPort.Width= Root.GetAttribute("width").ParseUnits
 		  viewPort.Height= Root.GetAttribute("height").ParseUnits
 		  
@@ -2650,7 +2650,7 @@ Inherits XMLDocument
 		  // sanity chk
 		  If Root= Nil Then Return New Picture(1, 1, 32)
 		  
-		  Dim size As Size= ToGroup2D.GetSize
+		  Dim size As SizeS= ToGroup2D.GetSize
 		  
 		  Dim width As Integer= Root.GetAttribute("width").ParseUnits
 		  If width= 0 Then width= size.Width
@@ -2718,15 +2718,15 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Shared Function TransformPoint(x As Double, y As Double, matrix() As Double) As Point
+		Private Shared Function TransformPoint(x As Double, y As Double, matrix() As Double) As PointS
 		  TransformPoint x, y, matrix
 		  
-		  Return New Point(x, y)
+		  Return New PointS(x, y)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function TransformPoint(pnt1 As Point, matrix() As Double) As Point
+		 Shared Function TransformPoint(pnt1 As PointS, matrix() As Double) As PointS
 		  If matrix.Ubound= -1 Then
 		    Return pnt1.Clone
 		  Else

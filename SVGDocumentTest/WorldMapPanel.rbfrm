@@ -77,18 +77,18 @@ End
 		  #pragma BackgroundTasks False
 		  
 		  // calculate deltaX and deltaY because always fit the svg image into canvas
-		  Dim size As Size= mSvgGroup2d.GetSize
+		  Dim size As SizeS= mSvgGroup2d.GetSize
 		  Dim deltaX As Integer= (Canvas1.Width- size.Width)/ 2
 		  Dim deltaY As Integer= (Canvas1.Height- size.Height)/ 2
 		  
-		  Dim pnt As New Point(x- deltaX, y- deltaY)
+		  Dim pnt As New PointS(x- deltaX, y- deltaY)
 		  mSelected= Nil
 		  
 		  For Each data As Pair In mData // loop for objects2D
 		    Dim obj As Object2D= data.Right
 		    Dim pointLists() As SVGPointList= obj.PointList
 		    For Each pointList As SVGPointList In pointLists // loop for figures
-		      Dim points() As Point= pointList.Points
+		      Dim points() As PointS= pointList.Points
 		      If Shape2D.PointInPolyWN(pnt, points) Then // if point is in points
 		        mSelected= obj.Clone
 		        mName= data.Left
@@ -122,7 +122,7 @@ End
 		  
 		  // scale and center
 		  Dim deltaX, deltaY As Integer
-		  Dim size As Size= mSize
+		  Dim size As SizeS= mSize
 		  Dim ratio As Double = Min(g.Height/ size.Height, g.Width/ size.Width)
 		  mSvgGroup2d.Scale= ratio
 		  deltaX= (g.Width/ 2)- Floor(size.Width* ratio/ 2)
@@ -160,7 +160,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mSize As Size
+		Private mSize As SizeS
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

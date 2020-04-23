@@ -1,20 +1,20 @@
 #tag Class
 Protected Class SVGPointList
 	#tag Method, Flags = &h0
-		Sub Append(point As Point)
+		Sub Append(point As PointS)
 		  mPoints.Append point
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Points() As Point()
+		Function Points() As PointS()
 		  Return mPoints
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h21
-		Private mPoints() As Point
+		Private mPoints() As PointS
 	#tag EndProperty
 
 

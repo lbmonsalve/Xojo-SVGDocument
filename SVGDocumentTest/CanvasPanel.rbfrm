@@ -230,7 +230,7 @@ End
 		  
 		  If mFit Then // fit the svg in the canvas
 		    mSvgGroup2d.Scale= 1.0
-		    Dim size As Size= mSvgGroup2d.GetSize
+		    Dim size As SizeS= mSvgGroup2d.GetSize
 		    Dim ratio As Double = Min(g.Height/ size.Height, g.Width/ size.Width)
 		    mSvgGroup2d.Scale= ratio
 		    deltaX= Floor(size.Width* ratio/ 2)

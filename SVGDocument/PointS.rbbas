@@ -1,8 +1,8 @@
 #tag Class
-Protected Class Point
+Protected Class PointS
 	#tag Method, Flags = &h0
-		Function Clone() As Point
-		  Return New Point(Self.X, Self.Y)
+		Function Clone() As PointS
+		  Return New PointS(Self.X, Self.Y)
 		End Function
 	#tag EndMethod
 
@@ -20,7 +20,7 @@ Protected Class Point
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Distance(other As Point) As Single
+		Function Distance(other As PointS) As Single
 		  Return Sqrt((other.X- Self.X)^ 2+ (other.Y- Self.Y)^ 2)
 		End Function
 	#tag EndMethod
@@ -33,8 +33,8 @@ Protected Class Point
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Add(rhs As Point) As Point
-		  Return New Point(Self.X+ rhs.X, Self.Y+ rhs.Y)
+		Function Operator_Add(rhs As PointS) As PointS
+		  Return New PointS(Self.X+ rhs.X, Self.Y+ rhs.Y)
 		End Function
 	#tag EndMethod
 
@@ -45,8 +45,8 @@ Protected Class Point
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_AddRight(lhs As Point) As Point
-		  Return New Point(Self.X+ lhs.X, Self.Y+ lhs.Y)
+		Function Operator_AddRight(lhs As PointS) As PointS
+		  Return New PointS(Self.X+ lhs.X, Self.Y+ lhs.Y)
 		End Function
 	#tag EndMethod
 
@@ -57,7 +57,7 @@ Protected Class Point
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Compare(rhs As Point) As Integer
+		Function Operator_Compare(rhs As PointS) As Integer
 		  Dim a, b As Single
 		  a= Self.X^ 2+ Self.Y^ 2
 		  b= rhs.X^ 2+ rhs.Y^ 2
@@ -86,14 +86,14 @@ Protected Class Point
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Negate() As Point
-		  Return New Point(-1* Self.X, -1* Self.Y)
+		Function Operator_Negate() As PointS
+		  Return New PointS(-1* Self.X, -1* Self.Y)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Subtract(rhs As Point) As Point
-		  Return New Point(Self.X- rhs.X, Self.Y- rhs.Y)
+		Function Operator_Subtract(rhs As PointS) As PointS
+		  Return New PointS(Self.X- rhs.X, Self.Y- rhs.Y)
 		End Function
 	#tag EndMethod
 

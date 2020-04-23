@@ -1,8 +1,8 @@
 #tag Class
-Protected Class Point
+Protected Class SizeS
 	#tag Method, Flags = &h0
-		Function Clone() As Point
-		  Return New Point(Self.X, Self.Y)
+		Function Clone() As SizeS
+		  Return New SizeS(Self.Width, Self.Height)
 		End Function
 	#tag EndMethod
 
@@ -13,28 +13,15 @@ Protected Class Point
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(x1 As Single, y1 As Single)
-		  Self.X= x1
-		  Self.Y= y1
+		Sub Constructor(width As Single, height As Single)
+		  Self.Width= width
+		  Self.Height= height
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Distance(other As Point) As Single
-		  Return Sqrt((other.X- Self.X)^ 2+ (other.Y- Self.Y)^ 2)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Offset(deltaX As Single, deltaY As Single)
-		  Self.X= Self.X+ deltaX
-		  Self.Y= Self.Y+ deltaY
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Operator_Add(rhs As Point) As Point
-		  Return New Point(Self.X+ rhs.X, Self.Y+ rhs.Y)
+		Function Operator_Add(rhs As SizeS) As SizeS
+		  Return New SizeS(Self.Width+ rhs.Width, Self.Height+ rhs.Height)
 		End Function
 	#tag EndMethod
 
@@ -45,22 +32,16 @@ Protected Class Point
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_AddRight(lhs As Point) As Point
-		  Return New Point(Self.X+ lhs.X, Self.Y+ lhs.Y)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Operator_AddRight(lhs As String) As String
 		  Return lhs+ ToString
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Compare(rhs As Point) As Integer
+		Function Operator_Compare(rhs As SizeS) As Integer
 		  Dim a, b As Single
-		  a= Self.X^ 2+ Self.Y^ 2
-		  b= rhs.X^ 2+ rhs.Y^ 2
+		  a= Self.Area
+		  b= rhs.Area
 		  
 		  If a> b Then Return 1
 		  If a< b Then Return -1
@@ -77,8 +58,8 @@ Protected Class Point
 		    json.Load rhs
 		    #pragma BreakOnExceptions Default
 		    
-		    If json.HasName("X") Then Self.X= json.Value("X").SingleValue
-		    If json.HasName("Y") Then Self.Y= json.Value("Y").SingleValue
+		    If json.HasName("Width") Then Self.Width= json.Value("Width").SingleValue
+		    If json.HasName("Height") Then Self.Height= json.Value("Height").SingleValue
 		  Catch e As JSONException
 		    System.DebugLog CurrentMethodName+ " json.Load rhs (error): "+ e.Message
 		  End Try
@@ -86,14 +67,14 @@ Protected Class Point
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Negate() As Point
-		  Return New Point(-1* Self.X, -1* Self.Y)
+		Function Operator_Negate() As SizeS
+		  Return New SizeS(-1* Self.Width, -1* Self.Height)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Subtract(rhs As Point) As Point
-		  Return New Point(Self.X- rhs.X, Self.Y- rhs.Y)
+		Function Operator_Subtract(rhs As SizeS) As SizeS
+		  Return New SizeS(Self.Width- rhs.Width, Self.Height- rhs.Height)
 		End Function
 	#tag EndMethod
 
@@ -102,8 +83,8 @@ Protected Class Point
 		  Dim ret As New JSONData
 		  ret.Compact= compact
 		  
-		  ret.Value("X")= Self.X
-		  ret.Value("Y")= Self.Y
+		  ret.Value("Width")= Self.Width
+		  ret.Value("Height")= Self.Height
 		  
 		  Return ret
 		  
@@ -119,23 +100,42 @@ Protected Class Point
 		Function ToString(compact As Boolean = True) As String
 		  #pragma Unused compact
 		  
-		  Return "{""X"":"+ NumberToString(Self.X)+ ",""Y"":"+ NumberToString(Self.Y)+ "}"
+		  Return "{""Width"":"+ NumberToString(Self.Width)+ ",""Height"":"+ NumberToString(Self.Height)+ "}"
 		  
 		  'Return ToJSONData(compact).ToString
 		End Function
 	#tag EndMethod
 
 
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return Self.Width* Self.Height
+			End Get
+		#tag EndGetter
+		Area As Single
+	#tag EndComputedProperty
+
 	#tag Property, Flags = &h0
-		X As Single
+		Height As Single
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Y As Single
+		Width As Single
 	#tag EndProperty
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Area"
+			Group="Behavior"
+			Type="Single"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Height"
+			Group="Behavior"
+			Type="Single"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true
@@ -170,12 +170,7 @@ Protected Class Point
 			InheritedFrom="Object"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="X"
-			Group="Behavior"
-			Type="Single"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Y"
+			Name="Width"
 			Group="Behavior"
 			Type="Single"
 		#tag EndViewProperty

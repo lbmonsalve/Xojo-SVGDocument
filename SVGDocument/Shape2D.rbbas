@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Shape2D
 	#tag Method, Flags = &h0
-		 Shared Function AngleBetweenVectors(u As Point, v As Point) As Double
+		 Shared Function AngleBetweenVectors(u As PointS, v As PointS) As Double
 		  ' This project is a {Zoclee}™ open source initiative.
 		  ' www.zoclee.com
 		  
@@ -127,8 +127,8 @@ Protected Class Shape2D
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function DegreesToXY(degrees As Double, radius As Double) As Point
-		  Dim xy As New Point
+		 Shared Function DegreesToXY(degrees As Double, radius As Double) As PointS
+		  Dim xy As New PointS
 		  
 		  Dim radians As Double= GetRadians(degrees)
 		  
@@ -173,12 +173,12 @@ Protected Class Shape2D
 		  
 		  // Step 4: Compute theta1 and thetaDelta
 		  
-		  Dim u As New Point(1, 0)
-		  Dim v As New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  Dim u As New PointS(1, 0)
+		  Dim v As New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
 		  Dim theta1 As Double= AngleBetweenVectors(u, v)
 		  
-		  u = New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
-		  v = New Point((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
+		  u = New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  v = New PointS((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
 		  Dim thetaDelta As Double= AngleBetweenVectors(u, v)
 		  thetaDelta = thetaDelta mod 360
 		  
@@ -267,12 +267,12 @@ Protected Class Shape2D
 		  
 		  // Step 4: Compute theta1 and thetaDelta
 		  
-		  Dim u As New Point(1, 0)
-		  Dim v As New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  Dim u As New PointS(1, 0)
+		  Dim v As New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
 		  Dim theta1 As Double= AngleBetweenVectors(u, v)
 		  
-		  u = New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
-		  v = New Point((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
+		  u = New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  v = New PointS((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
 		  Dim thetaDelta As Double= AngleBetweenVectors(u, v)
 		  thetaDelta = thetaDelta mod 360
 		  
@@ -363,12 +363,12 @@ Protected Class Shape2D
 		  
 		  // Step 4: Compute theta1 and thetaDelta
 		  
-		  Dim u As New Point(1, 0)
-		  Dim v As New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  Dim u As New PointS(1, 0)
+		  Dim v As New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
 		  Dim theta1 As Double= AngleBetweenVectors(u, v)
 		  
-		  u = New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
-		  v = New Point((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
+		  u = New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  v = New PointS((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
 		  Dim thetaDelta As Double= AngleBetweenVectors(u, v)
 		  thetaDelta = thetaDelta mod 360
 		  
@@ -467,12 +467,12 @@ Protected Class Shape2D
 		  
 		  // Step 4: Compute theta1 and thetaDelta
 		  
-		  Dim u As New Point(1, 0)
-		  Dim v As New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  Dim u As New PointS(1, 0)
+		  Dim v As New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
 		  Dim theta1 As Double= AngleBetweenVectors(u, v)
 		  
-		  u = New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
-		  v = New Point((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
+		  u = New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  v = New PointS((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
 		  Dim thetaDelta As Double= AngleBetweenVectors(u, v)
 		  thetaDelta = thetaDelta mod 360
 		  
@@ -571,12 +571,12 @@ Protected Class Shape2D
 		  
 		  // Step 4: Compute theta1 and thetaDelta
 		  
-		  Dim u As New Point(1, 0)
-		  Dim v As New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  Dim u As New PointS(1, 0)
+		  Dim v As New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
 		  Dim theta1 As Double= AngleBetweenVectors(u, v)
 		  
-		  u = New Point((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
-		  v = New Point((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
+		  u = New PointS((x1Comp - cxComp) / rx, (y1Comp - cyComp) / ry)
+		  v = New PointS((-x1Comp - cxComp) / rx, (-y1Comp - cyComp) / ry)
 		  Dim thetaDelta As Double= AngleBetweenVectors(u, v)
 		  thetaDelta = thetaDelta mod 360
 		  
@@ -705,28 +705,28 @@ Protected Class Shape2D
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function GetRotatedBounds(r As Rect, angle As Double) As Rect
-		  If r Is Nil Then Return New Rect
+		 Shared Function GetRotatedBounds(r As RectS, angle As Double) As RectS
+		  If r Is Nil Then Return New RectS
 		  If angle= 0 Then Return r
 		  
-		  Dim point1 As Point= GetRotatedPoint(r.Left, r.Top, r.Center.X, r.Center.Y, angle)
-		  Dim point2 As Point= GetRotatedPoint(r.Right, r.Top, r.Center.X, r.Center.Y, angle)
-		  Dim point3 As Point= GetRotatedPoint(r.Right, r.Bottom, r.Center.X, r.Center.Y, angle)
-		  Dim point4 As Point= GetRotatedPoint(r.Left, r.bottom, r.Center.X, r.Center.Y, angle)
+		  Dim point1 As PointS= GetRotatedPoint(r.Left, r.Top, r.Center.X, r.Center.Y, angle)
+		  Dim point2 As PointS= GetRotatedPoint(r.Right, r.Top, r.Center.X, r.Center.Y, angle)
+		  Dim point3 As PointS= GetRotatedPoint(r.Right, r.Bottom, r.Center.X, r.Center.Y, angle)
+		  Dim point4 As PointS= GetRotatedPoint(r.Left, r.bottom, r.Center.X, r.Center.Y, angle)
 		  
 		  Dim left As Double= Min(point1.X, point2.X, point3.X, point4.X)
 		  Dim top As Double= Min(point1.Y, point2.Y, point3.Y, point4.Y)
 		  Dim right As Double= Max(point1.X, point2.X, point3.X, point4.X)
 		  Dim bottom As Double= Max(point1.Y, point2.Y, point3.Y, point4.Y)
 		  
-		  Return New Rect(left, top, right- left, bottom- top)
+		  Return New RectS(left, top, right- left, bottom- top)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function GetRotatedPoint(x As Double, y As Double, cx As Double, cy As Double, a As Double) As Point
+		 Shared Function GetRotatedPoint(x As Double, y As Double, cx As Double, cy As Double, a As Double) As PointS
 		  If a= 0 Then
-		    Return New Point(x, y)
+		    Return New PointS(x, y)
 		  Else
 		    Dim r As Double= Sqrt((x- cx)^ 2+ (y- cy)^ 2) // radius using distance formula
 		    
@@ -735,7 +735,7 @@ Protected Class Shape2D
 		    Dim nx As Integer= Round(r* Cos(a+ iA))
 		    Dim ny As Integer= Round(r* Sin(a+ iA))
 		    
-		    Return New Point(cx+ nx, cy+ ny)
+		    Return New PointS(cx+ nx, cy+ ny)
 		  End If
 		End Function
 	#tag EndMethod
@@ -985,7 +985,7 @@ Protected Class Shape2D
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Shared Function IsLeft(p0 As Point, p1 As Point, p2 As Point) As Integer
+		Private Shared Function IsLeft(p0 As PointS, p1 As PointS, p2 As PointS) As Integer
 		  Return ( (p1.X - p0.X) * (p2.Y - p0.Y) - (p2.X -  p0.X) * (p1.Y - p0.Y) )
 		  
 		  // isLeft(): tests if a point is Left|On|Right of an infinite line.
@@ -1238,7 +1238,7 @@ Protected Class Shape2D
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function PointInPoint(xP As Point, aP As Point, bP As Point, cP As Point, dP As Point) As Boolean
+		 Shared Function PointInPoint(xP As PointS, aP As PointS, bP As PointS, cP As PointS, dP As PointS) As Boolean
 		  Dim a1 As Double= Sqrt((aP.X- bP.X)^2+ (aP.Y- bP.Y)^2)
 		  Dim a2 As Double= Sqrt((bP.X- cP.X)^2+ (bP.Y- cP.Y)^2)
 		  Dim a3 As Double= Sqrt((cP.X- dP.X)^2+ (cP.Y- dP.Y)^2)
@@ -1268,7 +1268,7 @@ Protected Class Shape2D
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function PointInPolyCN(pnt As Point, verts() As Point) As Boolean
+		 Shared Function PointInPolyCN(pnt As PointS, verts() As PointS) As Boolean
 		  Dim cn As Integer    // the  crossing number counter
 		  
 		  // loop through all edges of the polygon
@@ -1303,7 +1303,7 @@ Protected Class Shape2D
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function PointInPolyWN(pnt As Point, verts() As Point) As Boolean
+		 Shared Function PointInPolyWN(pnt As PointS, verts() As PointS) As Boolean
 		  Dim wn As Integer    // the  winding number counter
 		  
 		  // loop through all edges of the polygon
@@ -1376,7 +1376,7 @@ Protected Class Shape2D
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function RectPattern(posSize As Rect, lengths() As Integer) As Group2D
+		 Shared Function RectPattern(posSize As RectS, lengths() As Integer) As Group2D
 		  Return RectPattern(posSize.X, posSize.Y, posSize.Width, posSize.Height, lengths)
 		End Function
 	#tag EndMethod
@@ -1394,7 +1394,7 @@ Protected Class Shape2D
 		  Dim stepAngle As Double= 360/ slides
 		  Dim angle As Double
 		  
-		  Dim points() As Point
+		  Dim points() As PointS
 		  
 		  While angle< (360)
 		    points.Append DegreesToXY(angle, radius)
@@ -1429,7 +1429,7 @@ Protected Class Shape2D
 		  Dim counter, oddeven As Integer
 		  Dim i, r, yangle As Double
 		  
-		  Dim points() As Point
+		  Dim points() As PointS
 		  
 		  While i<= (kPI* 2)
 		    
@@ -1448,7 +1448,7 @@ Protected Class Shape2D
 		    End If
 		    counter= counter+ 1
 		    
-		    points.Append New Point(r* Sin(i), r* Cos(yangle))
+		    points.Append New PointS(r* Sin(i), r* Cos(yangle))
 		    
 		    i= i+ baseAngle
 		  Wend
@@ -1542,7 +1542,7 @@ Protected Class Shape2D
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function XYToDegrees(xy As Point) As Double
+		 Shared Function XYToDegrees(xy As PointS) As Double
 		  Dim radAngle As Double= Atan2(xy.Y, xy.X)
 		  Dim degreeAngle As Double= radAngle* 180/ kPI
 		  
