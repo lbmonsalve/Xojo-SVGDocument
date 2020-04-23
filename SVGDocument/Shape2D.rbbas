@@ -1220,24 +1220,6 @@ Protected Class Shape2D
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		 Shared Function PointInControl(x As Integer, y As Integer, ctrl As RectControl) As Boolean
-		  Dim rect As New REALbasic.Rect(ctrl.Left, ctrl.Top, ctrl.width, ctrl.Height)
-		  If rect.Contains(New REALbasic.Point(ctrl.Left+ x, ctrl.Top+ y)) Then Return True
-		  
-		  Return False
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		 Shared Function PointInControl(x As Integer, y As Integer, ctrl As Window) As Boolean
-		  Dim rect As New REALbasic.Rect(ctrl.Left, ctrl.Top, ctrl.width, ctrl.Height)
-		  If rect.Contains(New REALbasic.Point(ctrl.Left+ x, ctrl.Top+ y)) Then Return True
-		  
-		  Return False
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		 Shared Function PointInPoint(xP As PointS, aP As PointS, bP As PointS, cP As PointS, dP As PointS) As Boolean
 		  Dim a1 As Double= Sqrt((aP.X- bP.X)^2+ (aP.Y- bP.Y)^2)
 		  Dim a2 As Double= Sqrt((bP.X- cP.X)^2+ (bP.Y- cP.Y)^2)

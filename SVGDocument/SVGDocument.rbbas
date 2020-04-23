@@ -2062,7 +2062,13 @@ Inherits XMLDocument
 		      Dim http As New HTTPSocket
 		      pData= http.Get(uri, 3)
 		    End If
-		    If pData.Len> 0 Then p= Picture.FromData(pData)
+		    Try
+		      #pragma BreakOnExceptions Off
+		      If pData.Len> 0 Then p= Picture.FromData(pData)
+		      #pragma BreakOnExceptions Default
+		    Catch exc As RunTimeException
+		      System.DebugLog CurrentMethodName+ " err:"+ exc.Message+ EndOfLine+ pData
+		    End Try
 		  End If
 		  
 		  If p= Nil Then p=New Picture(1,  1, 32)
@@ -2751,7 +2757,7 @@ Inherits XMLDocument
 		You can load SVG files and render to Picture or Group2D objects. Also can create and manipulate SVG docs.
 		
 		
-		## Example:
+		## Example
 		```vb
 		'Load:
 		Dim svg As New SVGDocument(SpecialFolder.Documents.Child("Example.svg"))
@@ -2773,10 +2779,20 @@ Inherits XMLDocument
 		Dim myGroup As Group2D= myFile.OpenAsSVG
 		```
 		
+		## Requirements
 		
-		Copyright 2017-2020 Bernardo Monsalve (lbmonsalve@outlook.com)
+		IDE From RealStudio 2011r4 to Xojo 2019r9.1
 		
-		[repo](https://github.com/lbmonsalve/Xojo-SVGDocument.git)
+		## How to incorporate into your Realbasic/Xojo project
+		
+		Copy `SVGDocument` folder to your project.
+		
+		
+		Thanks [Zoclee](https://github.com/Zoclee/xojo-drawsvg) for examples and others stuffs.
+		
+		
+		Copyright (c) 2017-2020 Bernardo Monsalve (lbmonsalve@outlook.com)
+		
 	#tag EndNote
 
 
