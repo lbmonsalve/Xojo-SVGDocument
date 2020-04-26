@@ -99,7 +99,7 @@ Inherits TestGroup
 		  Dim path4 As XmlElement= svg3.Path("M40,20  A30,30 0 0,1 70,70")
 		  path4.Style("stroke: #0000ff; stroke-width:2; fill:none;")
 		  
-		  Dim img1 As XmlElement= svg.Image("http://svgjs.com/assets/images/logo-svg-js-01d-128.png")
+		  Dim img1 As XmlElement= svg.Image("https://ssl.gstatic.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png")
 		  img1.XY("50", "200")
 		  img1.WidthHeight("128", "128")
 		  img1.SetAttribute("transform", " translate(60,-40) rotate(45, 50, 200) scale(0.5)") //  skewX(10)

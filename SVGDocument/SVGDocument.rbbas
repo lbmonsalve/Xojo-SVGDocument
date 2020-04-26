@@ -21,6 +21,7 @@ Inherits XMLDocument
 		    
 		    SetStyleMask grp, node
 		    
+		    mShapeData.Append New SVGShape(shape, node)
 		    RaiseEvent Object2DAdded(shape, node)
 		  Else
 		    Dim shapeTmp As New CurveShape
@@ -35,6 +36,7 @@ Inherits XMLDocument
 		      
 		      SetStyleMask grp, node
 		      
+		      mShapeData.Append New SVGShape(shape, node)
 		      RaiseEvent Object2DAdded(shape, node)
 		    End If
 		  End If
@@ -61,6 +63,7 @@ Inherits XMLDocument
 		    
 		    SetStyleMask grp, node
 		    
+		    mShapeData.Append New SVGShape(shape, node)
 		    RaiseEvent Object2DAdded(shape, node)
 		  Else
 		    Dim shapeTmp As New CurveShape
@@ -75,6 +78,7 @@ Inherits XMLDocument
 		      
 		      SetStyleMask grp, node
 		      
+		      mShapeData.Append New SVGShape(shape, node)
 		      RaiseEvent Object2DAdded(shape, node)
 		    End If
 		  End If
@@ -94,6 +98,7 @@ Inherits XMLDocument
 		  If grpChild.Count> 0 Then
 		    grp.Append grpChild
 		    
+		    mShapeData.Append New SVGShape(grp, node)
 		    RaiseEvent Object2DAdded(grp, node)
 		  End If
 		End Sub
@@ -111,6 +116,7 @@ Inherits XMLDocument
 		    SetStyleRecursive shape, node
 		    grp.Append shape
 		    
+		    mShapeData.Append New SVGShape(shape, node)
 		    RaiseEvent Object2DAdded(shape, node)
 		  Else
 		    Dim shape As New PixmapShape(ParseImage(node.GetAttribute("xlink:href")))
@@ -150,6 +156,7 @@ Inherits XMLDocument
 		    SetStyleRecursive shape, node
 		    grp.Append shape
 		    
+		    mShapeData.Append New SVGShape(shape, node)
 		    RaiseEvent Object2DAdded(shape, node)
 		  End If
 		End Sub
@@ -194,6 +201,7 @@ Inherits XMLDocument
 		  
 		  AddMarkers grp, node, pnt1, pnt2, angle1, angle1
 		  
+		  mShapeData.Append New SVGShape(line, node)
 		  RaiseEvent Object2DAdded(line, node)
 		End Sub
 	#tag EndMethod
@@ -276,6 +284,7 @@ Inherits XMLDocument
 		  
 		  shape.Append shapePath
 		  
+		  mShapeData.Append New SVGShape(shapePath, node)
 		  RaiseEvent Object2DAdded(shapePath, node)
 		End Sub
 	#tag EndMethod
@@ -939,6 +948,7 @@ Inherits XMLDocument
 		  SetStyleRecursive shape, node
 		  grp.Append shape
 		  
+		  mShapeData.Append New SVGShape(shape, node)
 		  RaiseEvent Object2DAdded(shape, node)
 		End Sub
 	#tag EndMethod
@@ -1000,6 +1010,7 @@ Inherits XMLDocument
 		  
 		  grp.Append shape
 		  
+		  mShapeData.Append New SVGShape(shape, node)
 		  RaiseEvent Object2DAdded(shape, node)
 		End Sub
 	#tag EndMethod
@@ -1024,6 +1035,7 @@ Inherits XMLDocument
 		    
 		    SetStyleMask grp, node
 		    
+		    mShapeData.Append New SVGShape(shape, node)
 		    RaiseEvent Object2DAdded(shape, node)
 		  Else
 		    Dim x, y, x2, y2 As Double
@@ -1058,6 +1070,7 @@ Inherits XMLDocument
 		    SetStyleRecursive shape, node
 		    grp.Append shape
 		    
+		    mShapeData.Append New SVGShape(shape, node)
 		    RaiseEvent Object2DAdded(shape, node)
 		  End If
 		End Sub
@@ -1113,6 +1126,7 @@ Inherits XMLDocument
 		    
 		    grp.Append shape
 		    
+		    mShapeData.Append New SVGShape(shape, node)
 		    RaiseEvent Object2DAdded(shape, node)
 		  Else
 		    Dim xWidth As Double
@@ -1150,6 +1164,7 @@ Inherits XMLDocument
 		        
 		        grp.Append shape
 		        
+		        mShapeData.Append New SVGShape(shape, node)
 		        RaiseEvent Object2DAdded(shape, node)
 		        
 		        xWidth= xWidth+ shape.StringWidth
@@ -1254,10 +1269,13 @@ Inherits XMLDocument
 		    Super.Constructor(fItem)
 		  Catch e As XmlException
 		    DebugLog CurrentMethodName+ " XmlException: "+ e.Message
+		    Raise e
 		  Catch e As XmlDomException
 		    DebugLog CurrentMethodName+ " XmlDomException: "+ e.Message
+		    Raise e
 		  Catch e As XmlReaderException
 		    DebugLog CurrentMethodName+ " XmlReaderException: "+ e.Message
+		    Raise e
 		  End Try
 		  
 		  InitChk
@@ -1276,10 +1294,13 @@ Inherits XMLDocument
 		    Super.Constructor(xmlDoc)
 		  Catch e As XmlException
 		    DebugLog CurrentMethodName+ " XmlException: "+ e.Message
+		    Raise e
 		  Catch e As XmlDomException
 		    DebugLog CurrentMethodName+ " XmlDomException: "+ e.Message
+		    Raise e
 		  Catch e As XmlReaderException
 		    DebugLog CurrentMethodName+ " XmlReaderException: "+ e.Message
+		    Raise e
 		  End Try
 		  
 		  InitChk
@@ -1528,6 +1549,12 @@ Inherits XMLDocument
 		  End If
 		  
 		  Return matrixNode
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetShapeData() As ISVGShape()
+		  Return mShapeData
 		End Function
 	#tag EndMethod
 
@@ -2591,6 +2618,12 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ShapeData() As ISVGShape()
+		  Return mShapeData
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ToGroup2D(useCache As Boolean = True) As Group2D
 		  Dim svg As XmlElement= Root
 		  
@@ -2749,13 +2782,11 @@ Inherits XMLDocument
 
 	#tag Note, Name = Readme
 		
-		# SVGDocument
-		
+		SVGDocument
 		---
 		
 		Use SVG documents in Xojo. SVG is an XML document with special tags.
 		You can load SVG files and render to Picture or Group2D objects. Also can create and manipulate SVG docs.
-		
 		
 		## Example
 		```vb
@@ -2781,18 +2812,30 @@ Inherits XMLDocument
 		
 		## Requirements
 		
-		IDE From RealStudio 2011r4 to Xojo 2019r9.1
+		IDE From 2011r4 to 2019r3.1
 		
 		## How to incorporate into your Realbasic/Xojo project
 		
 		Copy `SVGDocument` folder to your project.
 		
+		## Thanks
 		
-		Thanks [Zoclee](https://github.com/Zoclee/xojo-drawsvg) for examples and others stuffs.
+		[Zoclee](https://github.com/Zoclee/xojo-drawsvg) for examples and others stuffs.
 		
 		
 		Copyright (c) 2017-2020 Bernardo Monsalve (lbmonsalve@outlook.com)
+	#tag EndNote
+
+	#tag Note, Name = Release
 		
+		0.0.200426
+		
+		* Add SVGDocument.ShapeData
+		- Fix issues in constructor with invalid XML data
+		
+		0.0.200422
+		
+		* initial release
 	#tag EndNote
 
 
@@ -2802,6 +2845,10 @@ Inherits XMLDocument
 
 	#tag Property, Flags = &h21
 		Private mShapeCache As Group2D
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mShapeData() As ISVGShape
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -2834,7 +2881,7 @@ Inherits XMLDocument
 	#tag EndComputedProperty
 
 
-	#tag Constant, Name = kVersion, Type = String, Dynamic = False, Default = \"0.0.200422", Scope = Private, Attributes = \"Hidden"
+	#tag Constant, Name = kVersion, Type = String, Dynamic = False, Default = \"0.0.200426", Scope = Private, Attributes = \"Hidden"
 	#tag EndConstant
 
 	#tag Constant, Name = kXmlAttrXmlnsTag, Type = String, Dynamic = False, Default = \"xmlns", Scope = Public
