@@ -1,5 +1,4 @@
-SVGDocument
----
+# SVGDocument
 
 Use SVG documents in Xojo. SVG is an XML document with special tags.
 You can load SVG files and render to Picture or Group2D objects. Also can create and manipulate SVG docs.

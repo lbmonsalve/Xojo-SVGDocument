@@ -24,6 +24,12 @@ Protected Interface ISVGShape
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function PointLists() As SVGPointList()
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Readme
 		

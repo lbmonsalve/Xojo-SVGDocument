@@ -28,10 +28,11 @@ Implements ISVGShape
 		  mObj2D= obj
 		  
 		  mData= New Dictionary
-		  
 		  For i As Integer= 0 To node.AttributeCount- 1
 		    mData.Value(node.GetAttributeNode(i).Name)= node.GetAttributeNode(i).Value
 		  Next
+		  
+		  mPointLists= New Dictionary
 		End Sub
 	#tag EndMethod
 
@@ -49,6 +50,24 @@ Implements ISVGShape
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function PointLists() As SVGPointList()
+		  Dim pointLists() As SVGPointList
+		  
+		  Dim tmp As Variant= mObj2D
+		  Dim key As Int64= tmp.Hash* (mObj2D.Scale* 100000)
+		  
+		  If mPointLists.HasKey(key) Then // in cache
+		    pointLists= mPointLists.Value(key)
+		  Else
+		    pointLists= mObj2D.PointList
+		    mPointLists.Value(key)= pointLists
+		  End If
+		  
+		  Return pointLists
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h21
 		Private mData As Dictionary
@@ -56,6 +75,10 @@ Implements ISVGShape
 
 	#tag Property, Flags = &h21
 		Private mObj2D As Object2D
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mPointLists As Dictionary
 	#tag EndProperty
 
 

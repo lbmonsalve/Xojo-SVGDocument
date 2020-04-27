@@ -194,9 +194,12 @@ End
 		  
 		  If mFit Then // switch the caption and fit in paint event on canvas1
 		    PushButton2.Caption= "Ori"
+		    
+		    mBuffer= Nil
 		    Canvas1.Invalidate
 		  Else // switch the caption and set the scale to 100%
 		    PushButton2.Caption= "Fit"
+		    
 		    Slider1.Value= 100
 		  End If
 		End Sub
@@ -206,50 +209,50 @@ End
 		Private Sub OnPaint(g As Graphics)
 		  #pragma BackgroundTasks False
 		  
+		  Dim reCalc As Boolean
+		  
 		  If mBuffer Is Nil Then // init the buffer
 		    mBuffer= New Picture(g.Width, g.Height, 32)
+		    reCalc= True
 		  ElseIf mBuffer.Width<> g.Width Or mBuffer.Height<> g.Height Then
 		    mBuffer= New Picture(g.Width, g.Height, 32)
+		    reCalc= True
 		  End If
 		  
-		  Static bkg As PixmapShape // the chess board background
-		  If bkg= Nil Then
-		    bkg= Shape2D.ChessBoard(g.Width, g.Height, 15)
-		  ElseIf bkg.Width<> g.Width Or bkg.Height<> g.Height Then
-		    bkg= Shape2D.ChessBoard(g.Width, g.Height, 15)
+		  If reCalc Then // the chess board background
+		    Dim bkg As PixmapShape= Shape2D.ChessBoard(g.Width, g.Height, 15)
+		    mBuffer.Graphics.DrawObject bkg, g.Width/ 2, g.Height/ 2
 		  End If
-		  
-		  mBuffer.Graphics.DrawObject bkg, g.Width/ 2, g.Height/ 2
 		  
 		  If mSvgGroup2d Is Nil Then
 		    g.DrawPicture mBuffer, 0, 0
 		    Return
 		  End If
 		  
-		  Dim deltaX, deltaY As Integer
-		  
-		  If mFit Then // fit the svg in the canvas
-		    mSvgGroup2d.Scale= 1.0
-		    Dim size As SizeS= mSvgGroup2d.GetSize
-		    Dim ratio As Double = Min(g.Height/ size.Height, g.Width/ size.Width)
-		    mSvgGroup2d.Scale= ratio
-		    deltaX= Floor(size.Width* ratio/ 2)
-		    deltaY= Floor(size.Height* ratio/ 2)
-		    
-		    mBuffer.Graphics.DrawObject mSvgGroup2d, (g.Width/ 2)- deltaX, (g.Height/ 2)- deltaY
-		    
-		    mUpdateScale= False
-		    Slider1.Value= mSvgGroup2d.Scale* 100
-		    mUpdateScale= True
-		  Else // paint the original svg
-		    
-		    'Dim size As Size= mSvgGroup2d.GetSize
-		    'deltaX= (size.Width/ 2)
-		    'deltaY= (size.Height/ 2)
-		    '
-		    'g.DrawObject mSvgGroup2d, (g.Width/ 2)- deltaX, (g.Height/ 2)- deltaY
-		    
-		    mBuffer.Graphics.DrawObject mSvgGroup2d, 0, 0
+		  If reCalc Then
+		    Dim deltaX, deltaY As Integer
+		    If mFit Then // fit the svg in the canvas
+		      mSvgGroup2d.Scale= 1.0
+		      Dim size As SizeS= mSvgGroup2d.GetSize
+		      Dim ratio As Double = Min(g.Height/ size.Height, g.Width/ size.Width)
+		      deltaX= size.Width* ratio/ 2
+		      deltaY= size.Height* ratio/ 2
+		      
+		      mSvgGroup2d.Scale= ratio
+		      mBuffer.Graphics.DrawObject mSvgGroup2d, (g.Width/ 2)- deltaX, (g.Height/ 2)- deltaY
+		      
+		      mUpdateScale= False
+		      Slider1.Value= mSvgGroup2d.Scale* 100
+		      mUpdateScale= True
+		    Else // paint the original svg
+		      'Dim size As Size= mSvgGroup2d.GetSize
+		      'deltaX= size.Width/ 2
+		      'deltaY= size.Height/ 2
+		      '
+		      'g.DrawObject mSvgGroup2d, (g.Width/ 2)- deltaX, (g.Height/ 2)- deltaY
+		      
+		      mBuffer.Graphics.DrawObject mSvgGroup2d, 0, 0
+		    End If
 		  End If
 		  
 		  g.DrawPicture mBuffer, 0, 0
@@ -267,6 +270,7 @@ End
 		    PushButton2.Caption= "Fit"
 		  End If
 		  
+		  mBuffer= Nil
 		  Canvas1.Invalidate
 		End Sub
 	#tag EndMethod
@@ -295,6 +299,7 @@ End
 		  Dim svg As New SVGDocument(f)
 		  mSvgGroup2d= svg.ToGroup2D
 		  
+		  mBuffer= Nil
 		  Canvas1.Invalidate
 		  
 		  'svg.ToPicture.Save(SpecialFolder.Documents.Child("SVGDocument.png"), Picture.SaveAsPNG)

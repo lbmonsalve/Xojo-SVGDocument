@@ -323,14 +323,30 @@ Protected Module ShapeExtendsLBM
 		Function GetSize(Extends obj As Object2D) As SizeS
 		  'LBMSoft.Debug.Assert Not (obj Is Nil)
 		  
-		  Dim pMin As PointS
-		  Dim pMax As PointS
+		  Dim size As SizeS
 		  
-		  obj.GetSize(pMin, pMax)
+		  Dim tmp As Variant= obj
+		  Dim key As Int64= tmp.Hash* (obj.Scale* 100000)
 		  
-		  If pMin Is Nil Or pMax Is Nil Then Return New SizeS
+		  If mObjsScales Is Nil Then mObjsScales= New Dictionary
+		  If mObjsScales.HasKey(key) Then // in cache
+		    size= mObjsScales.Value(key)
+		  Else
+		    Dim pMin As PointS
+		    Dim pMax As PointS
+		    
+		    obj.GetSize(pMin, pMax)
+		    
+		    If pMin Is Nil Or pMax Is Nil Then
+		      size= New SizeS
+		    Else
+		      size= New SizeS(pMax.X- pMin.X, pMax.Y- pMin.Y)
+		    End If
+		    
+		    mObjsScales.Value(key)= size
+		  End If
 		  
-		  Return New SizeS(pMax.X- pMin.X, pMax.Y- pMin.Y)
+		  Return size
 		End Function
 	#tag EndMethod
 
@@ -1080,6 +1096,10 @@ Protected Module ShapeExtendsLBM
 		End Function
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		Private mObjsScales As Dictionary
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mPicString As Picture

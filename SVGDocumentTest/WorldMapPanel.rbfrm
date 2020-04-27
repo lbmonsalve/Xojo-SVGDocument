@@ -91,12 +91,11 @@ End
 		  mSelected= Nil
 		  
 		  For Each data As ISVGShape In mShapeData // loop for objects2D
-		    Dim obj As Object2D= data.Object2D
-		    Dim pointLists() As SVGPointList= obj.PointList
+		    Dim pointLists() As SVGPointList= data.PointLists
 		    For Each pointList As SVGPointList In pointLists // loop for figures
 		      Dim points() As PointS= pointList.Points
 		      If Shape2D.PointInPolyWN(pnt, points) Then // if point is in points
-		        mSelected= obj.Clone
+		        mSelected= data.Object2D.Clone
 		        If data.HasAttribute(mAttribName) Then mName= data.Attribute(mAttribName)
 		        Canvas1.Invalidate
 		        Return
@@ -112,36 +111,41 @@ End
 		Private Sub OnPaint(g As Graphics)
 		  #pragma BackgroundTasks False
 		  
+		  Dim reCalc As Boolean
+		  
 		  If mBuffer Is Nil Then // init picture buffer
 		    mBuffer= New Picture(g.Width, g.Height, 32)
+		    reCalc= True
 		  ElseIf mBuffer.Width<> g.Width Or mBuffer.Height<> g.Height Then // resize
 		    mBuffer= New Picture(g.Width, g.Height, 32)
+		    reCalc= True
 		  End If
 		  
-		  mBuffer.Graphics.ForeColor= &cF2F9FF00
-		  mBuffer.Graphics.FillRect 0, 0, mBuffer.Width, mBuffer.Height
+		  If reCalc Then // background
+		    mBuffer.Graphics.ForeColor= &cF2F9FF00
+		    mBuffer.Graphics.FillRect 0, 0, mBuffer.Width, mBuffer.Height
+		  End If
 		  
 		  If mSvgGroup2d Is Nil Then // sanity chk
 		    g.DrawPicture mBuffer, 0, 0
 		    Return
 		  End If
 		  
-		  // scale and center
-		  Dim deltaX, deltaY As Integer
-		  Dim size As SizeS= mSize
-		  Dim ratio As Double = Min(g.Height/ size.Height, g.Width/ size.Width)
-		  mSvgGroup2d.Scale= ratio
-		  deltaX= (g.Width/ 2)- Floor(size.Width* ratio/ 2)
-		  deltaY= (g.Height/ 2)- Floor(size.Height* ratio/ 2)
+		  Dim ratio As Double = Min(g.Height/ mSize.Height, g.Width/ mSize.Width)
+		  Dim deltaX As Integer= (g.Width/ 2)- (mSize.Width* ratio/ 2)
+		  Dim deltaY As Integer= (g.Height/ 2)- (mSize.Height* ratio/ 2)
 		  
-		  mBuffer.Graphics.DrawObject mSvgGroup2d, deltaX, deltaY // paint group2D
+		  If reCalc Then // scale and center
+		    mSvgGroup2d.Scale= ratio
+		    mBuffer.Graphics.DrawObject mSvgGroup2d, deltaX, deltaY // paint group2D
+		  End If
 		  
 		  g.DrawPicture mBuffer, 0, 0 // paint buffer
 		  
 		  If Not (mSelected Is Nil) Then // paint over the selected object2D
 		    mSelected.SetFillColor= &cFF000000
 		    g.DrawObject mSelected, deltaX, deltaY
-		    g.ForeColor= &cFF000000
+		    g.ForeColor= &cFF000050
 		    g.TextSize= g.Height* .1
 		    g.DrawString mName, g.Height* .04, g.Height* .11
 		  End If
