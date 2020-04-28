@@ -57,16 +57,16 @@ End
 	#tag Event
 		Sub Open()
 		  // load svg
-		  #If RBVersion< 2011.5
-		    Dim svg As New SVGDocument(kWorldMapSVGv1)
-		    mAttribName= "title"
+		  #If RBVersion< 2011.5 // just for fun
+		    Dim svg As New SVGDocument(kWorldMapSVGv1) // first version
+		    mAttribName= "title" // the attrib name that contains country name
 		  #else
-		    Dim svg As New SVGDocument(kWorldMapSVGv2)
-		    mAttribName= "data-name"
+		    Dim svg As New SVGDocument(kWorldMapSVGv2) // version 2
+		    mAttribName= "data-name" // the attrib name that contains country name
 		  #endif
 		  mSvgGroup2d= svg.ToGroup2D
-		  mSize= mSvgGroup2d.GetSize
-		  mShapeData= svg.ShapeData
+		  mSize= mSvgGroup2d.GetSize // original size
+		  mShapeData= svg.ShapeData // xml node attribs
 		End Sub
 	#tag EndEvent
 
@@ -82,12 +82,7 @@ End
 		Private Sub OnMouseMove(x As Integer, y As Integer)
 		  #pragma BackgroundTasks False
 		  
-		  // calculate deltaX and deltaY because always fit the svg image into canvas
-		  Dim size As SizeS= mSvgGroup2d.GetSize
-		  Dim deltaX As Integer= (Canvas1.Width- size.Width)/ 2
-		  Dim deltaY As Integer= (Canvas1.Height- size.Height)/ 2
-		  
-		  Dim pnt As New PointS(x- deltaX, y- deltaY)
+		  Dim pnt As New PointS(x- mDelta.X, y- mDelta.Y) // translate the point x, y
 		  mSelected= Nil
 		  
 		  For Each data As ISVGShape In mShapeData // loop for objects2D
@@ -131,22 +126,21 @@ End
 		    Return
 		  End If
 		  
-		  Dim ratio As Double = Min(g.Height/ mSize.Height, g.Width/ mSize.Width)
-		  Dim deltaX As Integer= (g.Width/ 2)- (mSize.Width* ratio/ 2)
-		  Dim deltaY As Integer= (g.Height/ 2)- (mSize.Height* ratio/ 2)
-		  
-		  If reCalc Then // scale and center
-		    mSvgGroup2d.Scale= ratio
-		    mBuffer.Graphics.DrawObject mSvgGroup2d, deltaX, deltaY // paint group2D
+		  If reCalc Then // scale and fit
+		    Dim ratio As Double = Min(g.Height/ mSize.Height, g.Width/ mSize.Width)
+		    mSvgGroup2d.Scale= ratio // scale
+		    
+		    mDelta= New PointS((g.Width/ 2)- (mSize.Width* ratio/ 2), (g.Height/ 2)- (mSize.Height* ratio/ 2))
+		    mBuffer.Graphics.DrawObject mSvgGroup2d, mDelta.X, mDelta.Y // paint group2D
 		  End If
 		  
 		  g.DrawPicture mBuffer, 0, 0 // paint buffer
 		  
 		  If Not (mSelected Is Nil) Then // paint over the selected object2D
 		    mSelected.SetFillColor= &cFF000000
-		    g.DrawObject mSelected, deltaX, deltaY
+		    g.DrawObject mSelected, mDelta.X, mDelta.Y
 		    g.ForeColor= &cFF000050
-		    g.TextSize= g.Height* .1
+		    g.TextSize= g.Height* .1 // 10% of hight
 		    g.DrawString mName, g.Height* .04, g.Height* .11
 		  End If
 		End Sub
@@ -159,6 +153,10 @@ End
 
 	#tag Property, Flags = &h21
 		Private mBuffer As Picture
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mDelta As PointS
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
