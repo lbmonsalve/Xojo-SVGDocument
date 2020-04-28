@@ -212,16 +212,15 @@ End
 		  Dim reCalc As Boolean
 		  
 		  If mBuffer Is Nil Then // init the buffer
-		    mBuffer= New Picture(g.Width, g.Height, 32)
 		    reCalc= True
 		  ElseIf mBuffer.Width<> g.Width Or mBuffer.Height<> g.Height Then
-		    mBuffer= New Picture(g.Width, g.Height, 32)
 		    reCalc= True
 		  End If
 		  
-		  If reCalc Then // the chess board background
+		  If reCalc Then
+		    mBuffer= New Picture(g.Width, g.Height, 32)
 		    Dim bkg As PixmapShape= Shape2D.ChessBoard(g.Width, g.Height, 15)
-		    mBuffer.Graphics.DrawObject bkg, g.Width/ 2, g.Height/ 2
+		    mBuffer.Graphics.DrawObject bkg, g.Width/ 2, g.Height/ 2 // the chess board background
 		  End If
 		  
 		  If mSvgGroup2d Is Nil Then

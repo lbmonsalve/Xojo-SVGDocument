@@ -109,28 +109,20 @@ End
 		  Dim reCalc As Boolean
 		  
 		  If mBuffer Is Nil Then // init picture buffer
-		    mBuffer= New Picture(g.Width, g.Height, 32)
 		    reCalc= True
 		  ElseIf mBuffer.Width<> g.Width Or mBuffer.Height<> g.Height Then // resize
-		    mBuffer= New Picture(g.Width, g.Height, 32)
 		    reCalc= True
 		  End If
 		  
-		  If reCalc Then // background
+		  If reCalc Then
+		    mBuffer= New Picture(g.Width, g.Height, 32)
 		    mBuffer.Graphics.ForeColor= &cF2F9FF00
-		    mBuffer.Graphics.FillRect 0, 0, mBuffer.Width, mBuffer.Height
-		  End If
-		  
-		  If mSvgGroup2d Is Nil Then // sanity chk
-		    g.DrawPicture mBuffer, 0, 0
-		    Return
-		  End If
-		  
-		  If reCalc Then // scale and fit
+		    mBuffer.Graphics.FillRect 0, 0, mBuffer.Width, mBuffer.Height // background
+		    
 		    Dim ratio As Double = Min(g.Height/ mSize.Height, g.Width/ mSize.Width)
 		    mSvgGroup2d.Scale= ratio // scale
 		    
-		    mDelta= New PointS((g.Width/ 2)- (mSize.Width* ratio/ 2), (g.Height/ 2)- (mSize.Height* ratio/ 2))
+		    mDelta= New PointS((g.Width- (mSize.Width* ratio))/ 2, (g.Height- (mSize.Height* ratio))/ 2)
 		    mBuffer.Graphics.DrawObject mSvgGroup2d, mDelta.X, mDelta.Y // paint group2D
 		  End If
 		  
@@ -140,7 +132,7 @@ End
 		    mSelected.SetFillColor= &cFF000000
 		    g.DrawObject mSelected, mDelta.X, mDelta.Y
 		    g.ForeColor= &cFF000050
-		    g.TextSize= g.Height* .1 // 10% of hight
+		    g.TextSize= g.Height* .1 // 10% of height
 		    g.DrawString mName, g.Height* .04, g.Height* .11
 		  End If
 		End Sub
