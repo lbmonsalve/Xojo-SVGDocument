@@ -2075,27 +2075,40 @@ Inherits XMLDocument
 		    Dim pData As String= NthField(uri, ",", 2).Trim
 		    p= Picture.FromData(DecodeBase64(pData))
 		  Else // try load synchronously
-		    Dim pData As String
-		    If uri.InStr("https")> 0 Then
-		      Dim http As New HTTPSecureSocket
-		      http.Secure= True
-		      #if RBVersion> 2015
-		        http.ConnectionType= SSLSocket.TLSv12
-		      #else
-		        http.ConnectionType= SSLSocket.TLSv1
-		      #endif
-		      pData= http.Get(uri, 3)
-		    Else
-		      Dim http As New HTTPSocket
-		      pData= http.Get(uri, 3)
-		    End If
-		    Try
-		      #pragma BreakOnExceptions Off
-		      If pData.Len> 0 Then p= Picture.FromData(pData)
-		      #pragma BreakOnExceptions Default
-		    Catch exc As RunTimeException
-		      System.DebugLog CurrentMethodName+ " err:"+ exc.Message+ EndOfLine+ pData
-		    End Try
+		    #if RBVersion< 2018.4
+		      Dim pData As String
+		      If uri.InStr("https")> 0 Then
+		        Dim http As New HTTPSecureSocket
+		        http.Secure= True
+		        #if RBVersion> 2015
+		          http.ConnectionType= SSLSocket.TLSv12
+		        #else
+		          http.ConnectionType= SSLSocket.TLSv1
+		        #endif
+		        pData= http.Get(uri, 3)
+		      Else
+		        Dim http As New HTTPSocket
+		        pData= http.Get(uri, 3)
+		      End If
+		      Try
+		        #pragma BreakOnExceptions Off
+		        If pData.Len> 0 Then p= Picture.FromData(pData)
+		        #pragma BreakOnExceptions Default
+		      Catch exc As RunTimeException
+		        System.DebugLog CurrentMethodName+ " err:"+ exc.Message+ EndOfLine+ pData
+		      End Try
+		    #else
+		      Dim tmp As FolderItem= GetTemporaryFolderItem
+		      Dim http As New URLConnection
+		      http.SendSync "GET", uri, tmp, 30
+		      Try
+		        #pragma BreakOnExceptions Off
+		        p= Picture.Open(tmp)
+		        #pragma BreakOnExceptions Default
+		      Catch exc As RuntimeException
+		        System.DebugLog CurrentMethodName+ " err:"+ exc.Message+ EndOfLine+ uri
+		      End Try
+		    #endif
 		  End If
 		  
 		  If p= Nil Then p=New Picture(1,  1, 32)
@@ -2827,6 +2840,10 @@ Inherits XMLDocument
 
 	#tag Note, Name = Release
 		
+		0.0.200429
+		
+		* Add URLConnection to ParseImage
+		
 		0.0.200426
 		
 		* Add SVGDocument.ShapeData
@@ -2880,7 +2897,7 @@ Inherits XMLDocument
 	#tag EndComputedProperty
 
 
-	#tag Constant, Name = kVersion, Type = String, Dynamic = False, Default = \"0.0.200426", Scope = Private, Attributes = \"Hidden"
+	#tag Constant, Name = kVersion, Type = String, Dynamic = False, Default = \"0.0.200429", Scope = Private, Attributes = \"Hidden"
 	#tag EndConstant
 
 	#tag Constant, Name = kXmlAttrXmlnsTag, Type = String, Dynamic = False, Default = \"xmlns", Scope = Public
