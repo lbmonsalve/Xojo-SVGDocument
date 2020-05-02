@@ -31,7 +31,6 @@ Module=ShapeExtendsLBM;../SVGDocument/ShapeExtendsLBM.rbbas;&hD84DFFF;&h7677D7FF
 Module=SVGExtendsLBM;../SVGDocument/SVGExtendsLBM.rbbas;&h6455C7FF;&h7677D7FF;false
 Class=SVGDocument;../SVGDocument/SVGDocument.rbbas;&h75592FFF;&h7677D7FF;false
 Class=SVGPointList;../SVGDocument/SVGPointList.rbbas;&h7BB057FF;&h7677D7FF;false
-Interface=ISVGShape;../SVGDocument/ISVGShape.rbbas;&h4270F7FF;&h7677D7FF;false
 Class=SVGShape;../SVGDocument/SVGShape.rbbas;&h389D87FF;&h7677D7FF;false
 MajorVersion=1
 MinorVersion=0

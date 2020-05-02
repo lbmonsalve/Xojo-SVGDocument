@@ -1553,12 +1553,6 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetShapeData() As ISVGShape()
-		  Return mShapeData
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetStyle(selector As String, name As String) As String
 		  If selector= "" Or name= "" Then Return ""
 		  
@@ -2631,7 +2625,7 @@ Inherits XMLDocument
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ShapeData() As ISVGShape()
+		Function ShapeData() As SVGShape()
 		  Return mShapeData
 		End Function
 	#tag EndMethod
@@ -2826,7 +2820,7 @@ Inherits XMLDocument
 		
 		IDE From 2011r4 to 2019r3.1
 		
-		## How to incorporate into your Realbasic/Xojo project
+		## How to incorporate
 		
 		Copy `SVGDocument` folder to your project.
 		
@@ -2839,6 +2833,10 @@ Inherits XMLDocument
 	#tag EndNote
 
 	#tag Note, Name = Release
+		
+		0.0.200502
+		
+		* Add SVGShape().Lookup
 		
 		0.0.200429
 		
@@ -2864,7 +2862,7 @@ Inherits XMLDocument
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mShapeData() As ISVGShape
+		Private mShapeData() As SVGShape
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -2897,7 +2895,7 @@ Inherits XMLDocument
 	#tag EndComputedProperty
 
 
-	#tag Constant, Name = kVersion, Type = String, Dynamic = False, Default = \"0.0.200429", Scope = Private, Attributes = \"Hidden"
+	#tag Constant, Name = kVersion, Type = String, Dynamic = False, Default = \"0.0.200502", Scope = Private, Attributes = \"Hidden"
 	#tag EndConstant
 
 	#tag Constant, Name = kXmlAttrXmlnsTag, Type = String, Dynamic = False, Default = \"xmlns", Scope = Public

@@ -570,6 +570,25 @@ Protected Module SVGExtendsLBM
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Lookup(Extends shapesData() As SVGShape, pnt As PointS, ByRef default As SVGShape) As Boolean
+		  #pragma BackgroundTasks False
+		  
+		  For Each data As SVGShape In shapesData // loop for objects2D
+		    Dim pointLists() As SVGPointList= data.PointLists
+		    For Each pointList As SVGPointList In pointLists // loop for figures
+		      Dim points() As PointS= pointList.Points
+		      If Shape2D.PointInPolyWN(pnt, points) Then // if point is in points
+		        default= data
+		        Return True
+		      End If
+		    Next // pointList
+		  Next // data
+		  
+		  Return False
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Marker(Extends nodeXML As XMLNode, id As String, width As Double, height As Double, refX As Double = 0, refY As Double = 0) As XMLElement
 		  Dim xml As XmlDocument
 		  Dim node As XmlNode

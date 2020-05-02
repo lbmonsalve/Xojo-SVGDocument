@@ -27,7 +27,6 @@ Module=ShapeExtendsLBM;../SVGDocument/ShapeExtendsLBM.rbbas;&h71F1B7FF;&h1F95EFF
 Module=SVGExtendsLBM;../SVGDocument/SVGExtendsLBM.rbbas;&h13C3EFFF;&h1F95EFFF;false
 Class=SVGDocument;../SVGDocument/SVGDocument.rbbas;&h33BB9FFF;&h1F95EFFF;false
 Class=SVGPointList;../SVGDocument/SVGPointList.rbbas;&h55527FFF;&h1F95EFFF;false
-Interface=ISVGShape;../SVGDocument/ISVGShape.rbbas;&h19B17FF;&h1F95EFFF;false
 Class=SVGShape;../SVGDocument/SVGShape.rbbas;&h160A8FFF;&h1F95EFFF;false
 DefaultWindow=UnitTestWindow
 AppMenuBar=UnitTestMenuBar

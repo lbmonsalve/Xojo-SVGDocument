@@ -16,7 +16,6 @@ Folder=SVGDocument;../SVGDocument;&hDDC9FFF;&h0;false
 Window=CanvasPanel;CanvasPanel.rbfrm;&hF9D77FF;&h0;false
 Window=WorldMapPanel;WorldMapPanel.rbfrm;&h2AE54FFF;&h0;false
 Class=SVGPointList;../SVGDocument/SVGPointList.rbbas;&h4C1A0FFF;&hDDC9FFF;false
-Interface=ISVGShape;../SVGDocument/ISVGShape.rbbas;&h1CF7B7FF;&hDDC9FFF;false
 Class=SVGShape;../SVGDocument/SVGShape.rbbas;&h3AC367FF;&hDDC9FFF;false
 Class=SVGDocument;../SVGDocument/SVGDocument.rbbas;&h516257FF;&hDDC9FFF;false
 DefaultWindow=Window1

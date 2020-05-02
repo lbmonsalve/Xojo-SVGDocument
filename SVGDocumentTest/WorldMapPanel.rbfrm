@@ -80,23 +80,13 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub OnMouseMove(x As Integer, y As Integer)
-		  #pragma BackgroundTasks False
-		  
-		  Dim pnt As New PointS(x- mDelta.X, y- mDelta.Y) // translate the point x, y
 		  mSelected= Nil
 		  
-		  For Each data As ISVGShape In mShapeData // loop for objects2D
-		    Dim pointLists() As SVGPointList= data.PointLists
-		    For Each pointList As SVGPointList In pointLists // loop for figures
-		      Dim points() As PointS= pointList.Points
-		      If Shape2D.PointInPolyWN(pnt, points) Then // if point is in points
-		        mSelected= data.Object2D.Clone
-		        If data.HasAttribute(mAttribName) Then mName= data.Attribute(mAttribName)
-		        Canvas1.Invalidate
-		        Return
-		      End If
-		    Next // pointList
-		  Next // data
+		  Dim data As SVGShape
+		  If mShapeData.Lookup(New PointS(x- mDelta.X, y- mDelta.Y), data) Then // found!
+		    mSelected= data.Object2D.Clone
+		    If data.HasAttribute(mAttribName) Then mName= data.Attribute(mAttribName)
+		  End If
 		  
 		  Canvas1.Invalidate
 		End Sub
@@ -104,8 +94,6 @@ End
 
 	#tag Method, Flags = &h21
 		Private Sub OnPaint(g As Graphics)
-		  #pragma BackgroundTasks False
-		  
 		  Dim reCalc As Boolean
 		  
 		  If mBuffer Is Nil Then // init picture buffer
@@ -122,7 +110,11 @@ End
 		    Dim ratio As Double = Min(g.Height/ mSize.Height, g.Width/ mSize.Width)
 		    mSvgGroup2d.Scale= ratio // scale
 		    
-		    mDelta= New PointS((g.Width- (mSize.Width* ratio))/ 2, (g.Height- (mSize.Height* ratio))/ 2)
+		    #If RBVersion< 2011.5
+		      mDelta= New PointS((g.Width- (mSize.Width* ratio))/ 2, (g.Height- (mSize.Height* ratio))/ 2)
+		    #Else // fix v2 map position
+		      mDelta= New PointS((g.Width- (mSize.Width* ratio))/ 2, (g.Height* .84- (mSize.Height* ratio))/ 2)
+		    #endif
 		    mBuffer.Graphics.DrawObject mSvgGroup2d, mDelta.X, mDelta.Y // paint group2D
 		  End If
 		  
@@ -160,7 +152,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mShapeData() As ISVGShape
+		Private mShapeData() As SVGShape
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

@@ -1,6 +1,5 @@
 #tag Class
 Protected Class SVGShape
-Implements ISVGShape
 	#tag Method, Flags = &h0
 		Function Attribute(name As String) As String
 		  // Parte de la interfaz ISVGShape.

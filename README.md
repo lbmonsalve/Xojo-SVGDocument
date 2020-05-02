@@ -29,7 +29,7 @@ Dim myGroup As Group2D= myFile.OpenAsSVG
 
 IDE From 2011r4 to 2019r3.1
 
-## How to incorporate into your Realbasic/Xojo project
+## How to incorporate
 
 Copy `SVGDocument` folder to your project.
 
